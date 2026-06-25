@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peptide Reference — Evidence-Graded Compendium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1620; --ink-2:#1b2735; --paper:#F6F7F9; --surface:#ffffff;
+    --line:#dfe3e8; --muted:#5b6776; --muted-2:#869; --accent:#0FA3A3;
+    --tA:#1F9D6B; --tB:#2D7FD5; --tC:#C98A00; --tD:#E2701E; --tE:#C8402E;
+    --flag:#C8402E;
+    --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+    --sans:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --r:10px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+
+  /* ---------- HEADER ---------- */
+  header.top{background:var(--ink);color:#eef2f6;padding:34px 22px 30px}
+  .wrap{max-width:1180px;margin:0 auto}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
+  header.top h1{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.02em;margin:0 0 10px;line-height:1.04}
+  header.top p.thesis{max-width:760px;color:#aeb9c6;font-size:15.5px;margin:0}
+  header.top p.thesis b{color:#eef2f6;font-weight:600}
+
+  /* distribution bar */
+  .dist{margin-top:26px}
+  .dist .bar{display:flex;height:34px;border-radius:6px;overflow:hidden;border:1px solid #2a3a4d}
+  .dist .seg{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:600;color:#fff;cursor:pointer;transition:filter .15s}
+  .dist .seg:hover{filter:brightness(1.12)}
+  .dist .labels{display:flex;justify-content:space-between;margin-top:8px;font-family:var(--mono);font-size:10.5px;color:#7d8a99;flex-wrap:wrap;gap:6px}
+
+  /* ---------- CONTROLS ---------- */
+  .controls{position:sticky;top:0;z-index:30;background:rgba(246,247,249,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px 22px;transition:transform .3s ease}
+  .controls.hide{transform:translateY(-110%)}
+  .controls .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .search{flex:1;min-width:200px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:9px 13px}
+  .search input{border:0;outline:0;font-family:var(--sans);font-size:14.5px;width:100%;background:transparent;color:var(--ink)}
+  .search svg{flex:0 0 auto;opacity:.5}
+  .legend{display:flex;gap:6px;flex-wrap:wrap}
+  .tierbtn{font-family:var(--mono);font-size:11px;font-weight:600;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 11px;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--ink);transition:all .12s}
+  .tierbtn .dot{width:9px;height:9px;border-radius:99px}
+  .tierbtn[data-on="false"]{opacity:.34}
+  .tierbtn:hover{border-color:var(--muted)}
+  .toolbtn{font-family:var(--mono);font-size:11px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:8px 12px;cursor:pointer;color:var(--muted)}
+  .toolbtn:hover{color:var(--ink);border-color:var(--muted)}
+
+  .cats{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+  .catchip{font-size:12.5px;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 13px;cursor:pointer;color:var(--muted);white-space:nowrap;transition:all .12s}
+  .catchip[data-on="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .catchip:hover{border-color:var(--muted)}
+
+  /* ---------- BODY ---------- */
+  main{max-width:1180px;margin:0 auto;padding:8px 22px 80px}
+
+  .note{background:#fff6f3;border:1px solid #f3d3c8;border-left:4px solid var(--flag);border-radius:var(--r);padding:16px 18px;margin:22px 0;font-size:13.5px;color:#6a3326}
+  .note h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--flag)}
+  details.method{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin:14px 0 6px;padding:0}
+  details.method summary{cursor:pointer;padding:14px 18px;font-weight:600;font-size:14px;list-style:none}
+  details.method summary::-webkit-details-marker{display:none}
+  details.method summary::before{content:"+ ";font-family:var(--mono);color:var(--accent)}
+  details.method[open] summary::before{content:"– "}
+  details.method .body{padding:0 18px 18px;font-size:13.5px;color:var(--muted)}
+  details.method .body p{margin:6px 0}
+  .ladder{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:8px 0;font-size:13px}
+  .ladder .code{font-family:var(--mono);font-weight:600;padding:1px 8px;border-radius:5px;color:#fff;text-align:center;height:fit-content}
+
+  section.cat{margin-top:34px}
+  section.cat > h2{font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:7px;margin:0 0 4px;display:flex;justify-content:space-between;align-items:baseline}
+  section.cat > h2 .ct{font-size:11px;color:var(--muted);font-weight:400}
+  section.cat > p.catdesc{color:var(--muted);font-size:13.5px;margin:8px 0 16px;max-width:780px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:13px}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;border-left:5px solid var(--line);transition:box-shadow .15s}
+  .card:hover{box-shadow:0 4px 16px rgba(14,22,32,.07)}
+  .card .head{padding:14px 15px;cursor:pointer;display:flex;gap:12px;align-items:flex-start}
+  .card .head .meta{flex:1;min-width:0}
+  .card .nm{font-weight:600;font-size:16px;letter-spacing:-.01em;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .card .nm .flag{color:var(--flag);font-size:13px}
+  .card .alias{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:2px;word-break:break-word}
+  .card .one{font-size:13.5px;color:var(--muted);margin-top:7px}
+  .tier{flex:0 0 auto;font-family:var(--mono);font-weight:600;font-size:12px;color:#fff;width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center}
+  .nonpep{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;background:#eef0f3;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 5px;text-transform:uppercase}
+
+  .card .detail{display:none;border-top:1px dashed var(--line);padding:4px 15px 16px}
+  .card.open .detail{display:block}
+  .card.open{box-shadow:0 6px 22px rgba(14,22,32,.1)}
+  .field{margin-top:13px}
+  .field .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+  .field .v{font-size:13.5px;color:var(--ink-2)}
+  .field.warn .k{color:var(--flag)}
+  .field.warn .v{color:#7a3b2e}
+  .status{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}
+  .pill{font-family:var(--mono);font-size:10.5px;border-radius:5px;padding:3px 8px;border:1px solid var(--line);color:var(--muted)}
+  .pill.fda-y{background:#eaf6f0;border-color:#bfe6d3;color:#137a52}
+  .pill.fda-n{background:#fdeeea;border-color:#f3cfc4;color:#b5402c}
+  .pill.wada{background:#fff8e6;border-color:#f0dca0;color:#8a6a00}
+
+  .empty{text-align:center;color:var(--muted);font-family:var(--mono);font-size:13px;padding:60px 0;display:none}
+
+  footer{max-width:1180px;margin:0 auto;padding:30px 22px 60px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  footer a{color:var(--accent)}
+
+  @media (max-width:620px){.grid{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Evidence-Graded Compendium · Updated Jun 2026</p>
+    <h1>The Peptide Reference</h1>
+    <p class="thesis">A working map of the peptides (and a few non-peptides that travel with them) people actually use or debate — graded honestly by <b>how much real human testing exists</b>, not by how loudly they're marketed. Most of this list has never been through a controlled human trial. The color of each compound tells you where it really stands.</p>
+    <div class="dist">
+      <div class="bar" id="distbar"></div>
+      <div class="labels" id="distlabels"></div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="row">
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="Search name, alias, or mechanism (e.g. GLP-1, telomerase, BPC)…" aria-label="Search compounds">
+      </label>
+      <div class="legend" id="legend"></div>
+      <button class="toolbtn" id="expandAll">Expand all</button>
+      <button class="toolbtn" id="collapseAll">Collapse all</button>
+    </div>
+    <div class="cats" id="cats"></div>
+  </div>
+</div>
+
+<main>
+  <div class="note">
+    <h3>Read this first</h3>
+    This is an information reference, not medical advice and not an endorsement. The dosing and frequency figures below are the <b>conventions reported in the literature or clinic/vendor sources</b> — for the unapproved compounds they are not validated, not standardized, and not safe to assume. Realities that cut across almost the entire list: (1) Most of these are sold as "research chemicals" with <b>no purity, sterility, or dose guarantee</b> — contamination with endotoxin or mis-sequenced peptide is a documented problem. (2) In late 2023 the FDA placed ~17–19 of these in <b>Category 2</b> (barred from compounding); a Pharmacy Compounding Advisory Committee review of 7 of them is scheduled for <b>July 23–24, 2026</b>, and an HHS statement in Feb 2026 floated moving ~14 back to Category 1 — announced, not finalized. (3) Almost everything that promotes tissue growth or new blood-vessel formation carries a <b>theoretical cancer-acceleration concern</b> that has not been ruled out in humans. (4) Nearly all are <b>banned by WADA</b>, and the U.S. DoD adopts the WADA list — relevant if you're ever drug-tested for sport, employment, or clearance.
+  </div>
+
+  <details class="method">
+    <summary>How the evidence tiers work, and how to read the conflicts</summary>
+    <div class="body">
+      <p>Each compound gets a single grade for <b>evidence maturity</b> — how far it has actually been tested in humans — plus a <span style="color:var(--flag)">▲ flag</span> when there's a specific, non-trivial safety signal beyond the general cautions above.</p>
+      <div class="ladder">
+        <span class="code" style="background:var(--tA)">A</span><span><b>Approved &amp; robust.</b> FDA or another major regulator approved it, backed by large randomized trials. The known quantity.</span>
+        <span class="code" style="background:var(--tB)">B</span><span><b>Strong human data.</b> Substantial human trials (Phase 2/3) but not approved for this use, or approved only outside the US with good data.</span>
+        <span class="code" style="background:var(--tC)">C</span><span><b>Limited human data.</b> Small or dated human studies, foreign approval with little Western replication, or an approved drug used far off-label.</span>
+        <span class="code" style="background:var(--tD)">D</span><span><b>Preclinical only.</b> Animal and test-tube data; little or no human evidence. This is where most "research peptides" actually sit.</span>
+        <span class="code" style="background:var(--tE)">E</span><span><b>Minimal / cautionary.</b> Essentially anecdotal, or development was halted, or the headline evidence was retracted.</span>
+      </div>
+      <p><b>On disagreements:</b> sources conflict most on (a) whether a compound causes cancer or just theoretically could, (b) "standard" doses (vendor/clinic numbers vary widely and aren't trial-derived), and (c) regulatory status, which is actively shifting in 2026. Where a specific claim is contested, it's called out in the compound's <i>Evidence &amp; disputes</i> field. Vendor and telehealth pages — which make up a large share of what's searchable — consistently <b>overstate benefit and understate uncertainty</b>; they were used for dosing conventions and naming, while clinical, regulatory, and PubMed sources were weighted for efficacy and safety claims.</p>
+    </div>
+  </details>
+
+  <div id="cards"></div>
+  <div class="empty" id="empty">No compounds match those filters.</div>
+</main>
+
+<footer>
+  <div>Compiled from a mix of regulatory filings (FDA, EMA), peer-reviewed trials and reviews (NEJM, PubMed/PMC, Cochrane), dermatology and clinical bodies, WADA/anti-doping sources, and clinic/vendor protocol pages (weighted low for any safety or efficacy claim). Evidence status is current to June 2026 and several items are actively under regulatory review. Nothing here is medical advice — decisions about any of these compounds belong with a licensed clinician who can see your labs and history.</div>
+</footer>
+
+<script>
+const C = [
+/* ============ TANNING / MELANOCORTIN PIGMENTATION ============ */
+{cat:"Tanning & pigmentation", nm:"Afamelanotide", alias:"Melanotan I, MT-1, Scenesse", tier:"A", flag:false,
+ one:"The legitimate, FDA-approved melanocortin — but approved for light protection in a rare disease, not for cosmetic tanning.",
+ what:"A synthetic α-MSH analog that activates MC1R, driving eumelanin production. Approved use is photoprotection in erythropoietic protoporphyria (EPP), where it reduces phototoxic pain — the tan is a side effect, not the indication.",
+ route:"Subcutaneous bioresorbable implant (~16 mg) placed by a clinician roughly every 2 months.",
+ dur:"Repeated implants on an ongoing schedule under specialist care; not cycled like a research peptide.",
+ caution:"Approved population is small and follow-up is limited. Darkening of existing moles occurs. Not a tanning product and not sold for that.",
+ evidence:"FDA-approved 2019 (Scenesse), EMA-approved earlier. MC1R-selective, and its monitoring has not flagged a melanoma signal — but the treated population is small, so that reassurance does not automatically transfer to Melanotan II.",
+ fda:"approved", wada:true},
+
+{cat:"Tanning & pigmentation", nm:"Melanotan II", alias:"MT-2, MT-II", tier:"D", flag:true,
+ one:"The popular DIY tanning peptide. No approval anywhere, non-selective across melanocortin receptors, and carries real case-report harms.",
+ what:"A cyclic, non-selective melanocortin agonist (MC1R for pigment, plus MC3/MC4R, which is why it also causes spontaneous erections and appetite suppression). Tanning typically appears within ~5 doses.",
+ route:"Subcutaneous injection, commonly every other day during a loading phase, then reduced; widely sold as a 'research chemical'.",
+ dur:"No validated cycle. Pigment changes to moles can be permanent even after stopping.",
+ caution:"Documented case reports of rhabdomyolysis and renal failure, and of new/atypical moles (dysplastic nevi — established melanoma precursors). It also darkens moles, which can mask the warning signs of skin cancer. Nausea, flushing, and the erection effect are common.",
+ evidence:"Not approved by FDA, EMA, TGA or MHRA. Whether it directly causes melanoma is genuinely unsettled: case reports are confounded by heavy UV/tanning-bed use, and 2013/2021 reviews found no conclusive causal link. The stronger, less-disputed concern is induction of atypical moles plus the uncontrolled purity of street supply.",
+ fda:"unapproved", wada:true},
+
+/* ============ SEXUAL FUNCTION ============ */
+{cat:"Sexual function", nm:"PT-141 (Bremelanotide)", alias:"Vyleesi, PT141", tier:"A", flag:false,
+ one:"FDA-approved libido drug that works through the brain, not blood flow — but only for one narrow, well-defined group.",
+ what:"A melanocortin (MC3R/MC4R) agonist derived from Melanotan II. Raises sexual desire centrally rather than affecting erections vascularly like sildenafil.",
+ route:"1.75 mg subcutaneous injection, on demand ~45 min before activity (the trialed protocol). Not weight-adjusted.",
+ dur:"As-needed, with a label cap of ~8 doses/month; not a daily or cycled drug.",
+ caution:"Causes a transient blood-pressure rise — contraindicated in uncontrolled hypertension or known cardiovascular disease. Nausea hits ~40%. Slows gastric emptying; interacts with naltrexone. Not for pregnancy.",
+ evidence:"Approved 2019 for acquired, generalized HSDD in premenopausal women, on two Phase 3 trials (RECONNECT, >1,200 women). Use in men or for general low libido is off-label and not established — sources promoting broad 'libido for everyone' use are outrunning the evidence.",
+ fda:"approved", wada:false},
+
+{cat:"Sexual function", nm:"Oxytocin", alias:"intranasal oxytocin", tier:"C", flag:false,
+ one:"Endogenous bonding hormone; the injectable obstetric form is old and approved, the intranasal 'social/sexual' use is much shakier.",
+ what:"A 9-amino-acid hypothalamic hormone involved in social bonding, trust, orgasm and uterine contraction. Intranasal use is studied for social cognition, anxiety and sexual function.",
+ route:"Approved IV/IM form (Pitocin) for labor. Off-label intranasal sprays/troches for social or sexual effects.",
+ dur:"Short half-life; effects are acute. No standardized wellness regimen.",
+ caution:"Obstetric IV use is well-characterized and not interchangeable with nasal 'wellness' dosing. Intranasal results in trials are inconsistent and brain penetration is debated.",
+ evidence:"The hormone itself is textbook; the intranasal social/sexual literature is mixed and often fails to replicate. Strong claims here rest on weak ground.",
+ fda:"approved", wada:false},
+
+/* ============ METABOLIC / WEIGHT ============ */
+{cat:"Metabolic & weight loss", nm:"Semaglutide", alias:"Ozempic, Wegovy, Rybelsus", tier:"A", flag:false,
+ one:"The drug that reset the whole category. GLP-1 receptor agonist, deeply validated.",
+ what:"GLP-1 receptor agonist: boosts glucose-dependent insulin secretion, slows gastric emptying, and cuts appetite centrally. ~15% mean body-weight loss in STEP trials.",
+ route:"Once-weekly subcutaneous (Ozempic/Wegovy) with stepwise titration; daily oral (Rybelsus, must be fasted, lower bioavailability).",
+ dur:"Chronic; weight tends to return after stopping. Titrate up slowly to limit GI effects.",
+ caution:"Nausea/vomiting/constipation common. Boxed warning for medullary thyroid carcinoma risk (rodent signal) — avoid with personal/family MTC or MEN2. Pancreatitis and gallbladder events reported.",
+ evidence:"Approved for T2D and chronic weight management; cardiovascular benefit (SELECT) and MASH/fatty-liver approval (Aug 2025). Among the best-evidenced drugs on this entire list.",
+ fda:"approved", wada:false},
+
+{cat:"Metabolic & weight loss", nm:"Tirzepatide", alias:"Mounjaro, Zepbound", tier:"A", flag:false,
+ one:"First approved dual GIP/GLP-1 agonist; outperforms semaglutide on weight.",
+ what:"Activates both GIP and GLP-1 receptors. The dual mechanism produces larger losses (~20–22% in SURMOUNT) than GLP-1 alone.",
+ route:"Once-weekly subcutaneous, 2.5–15 mg with titration.",
+ dur:"Chronic, same regain-on-stop pattern as semaglutide.",
+ caution:"Same GI profile and MTC boxed warning as semaglutide; effects on oral contraceptive absorption noted.",
+ evidence:"Approved for T2D (2022) and obesity (2023); MASH approval early 2026. SURMOUNT-5 head-to-head favored it over semaglutide. Strong, current.",
+ fda:"approved", wada:false},
+
+{cat:"Metabolic & weight loss", nm:"Retatrutide", alias:"LY3437943", tier:"B", flag:false,
+ one:"The 'triple G' — the most potent weight-loss agent yet, but still investigational.",
+ what:"A single peptide agonizing GIP, GLP-1 and glucagon receptors; ~6-day half-life. The glucagon arm adds energy expenditure on top of appetite suppression.",
+ route:"Once-weekly subcutaneous in trials (e.g., fixed low doses up to 12 mg).",
+ dur:"Investigational; Phase 3 TRIUMPH program running through 2026.",
+ caution:"GI effects are dose-driven and substantial — nausea ~42%, and high-dose discontinuation reached 12–18% in Phase 3 (some for 'excessive' weight loss). A new dysesthesia (skin sensitivity) signal appeared at high doses in Phase 3 that wasn't seen in Phase 2 — under watch.",
+ evidence:"Phase 2 (NEJM 2023) showed ~24% loss at 48 wks; TRIUMPH-4 (Dec 2025) ~28.7% at 68 wks; TRIUMPH-1 ~28–30%. Not yet approved as of mid-2026 — full peer-reviewed safety still being scrutinized.",
+ fda:"unapproved", wada:false},
+
+{cat:"Metabolic & weight loss", nm:"Liraglutide", alias:"Victoza, Saxenda", tier:"A", flag:false,
+ one:"The first weekly-era GLP-1; now older and weaker than its successors but fully approved.",
+ what:"GLP-1 receptor agonist, same class mechanism as semaglutide but shorter-acting.",
+ route:"Daily subcutaneous (1.8 mg Victoza for diabetes; 3.0 mg Saxenda for weight).",
+ dur:"Chronic. Daily dosing is its main practical drawback.",
+ caution:"Same GI and MTC-warning class effects; less weight loss (~5–8%) than newer agents.",
+ evidence:"Long approval history and large trials. Solid but superseded.",
+ fda:"approved", wada:false},
+
+{cat:"Metabolic & weight loss", nm:"Cagrilintide", alias:"long-acting amylin analog", tier:"B", flag:false,
+ one:"Amylin-pathway weight drug, mainly studied paired with semaglutide (CagriSema).",
+ what:"A long-acting amylin analog that promotes satiety via a different receptor system than GLP-1, hence the combination logic.",
+ route:"Weekly subcutaneous in trials.",
+ dur:"Investigational.",
+ caution:"GI effects; combination data still maturing and some CagriSema readouts undershot the highest expectations.",
+ evidence:"Phase 2 strong; Phase 3 (CagriSema) ongoing. Not approved. Promising but not yet a known quantity.",
+ fda:"unapproved", wada:false},
+
+{cat:"Metabolic & weight loss", nm:"Survodutide", alias:"BI 456906", tier:"B", flag:false,
+ one:"GLP-1/glucagon dual agonist, notable for fatty-liver (MASH) results.",
+ what:"Dual GLP-1 + glucagon receptor agonist; the glucagon arm targets liver fat and energy expenditure.",
+ route:"Weekly subcutaneous in trials.",
+ dur:"Investigational.",
+ caution:"GI effects typical of the class; long-term safety not established.",
+ evidence:"Phase 2 obesity and MASH data positive; Phase 3 ongoing. Not approved.",
+ fda:"unapproved", wada:false},
+
+{cat:"Metabolic & weight loss", nm:"Mazdutide", alias:"IBI362, LY3305677", tier:"C", flag:false,
+ one:"GLP-1/glucagon dual agonist developed primarily in China.",
+ what:"Dual GLP-1 + glucagon agonist (an oxyntomodulin analog).",
+ route:"Weekly subcutaneous in trials.",
+ dur:"Investigational; furthest along in the Chinese market.",
+ caution:"Western data sparse; regulatory status concentrated in China.",
+ evidence:"Phase 3 mainly in China with approval there progressing; limited Western replication, so graded lower on transferable certainty.",
+ fda:"unapproved", wada:false},
+
+{cat:"Metabolic & weight loss", nm:"Orforglipron", alias:"Foundayo", tier:"A", flag:false, nonpep:true,
+ one:"Oral, once-daily GLP-1 — but a small molecule, not a peptide.",
+ what:"A non-peptide oral GLP-1 receptor agonist. Same downstream pathway as semaglutide without the injection or the strict fasting Rybelsus requires.",
+ route:"Once-daily oral tablet.",
+ dur:"Chronic.",
+ caution:"GLP-1 class GI effects. Included because it's grouped with the peptide GLP-1s, but mechanistically it's a small molecule.",
+ evidence:"Approved 2026 (Foundayo) for chronic weight management; beat dapagliflozin and bested semaglutide on A1c in head-to-head diabetes trials.",
+ fda:"approved", wada:false},
+
+{cat:"Metabolic & weight loss", nm:"AOD-9604", alias:"hGH 176-191", tier:"C", flag:false,
+ one:"A GH fragment marketed for fat loss that's well-tested for safety — and failed to actually work.",
+ what:"A 16-aa C-terminal fragment of human growth hormone meant to drive lipolysis without GH's IGF-1/glucose effects.",
+ route:"Subcutaneous, often daily; sold as a research chemical.",
+ dur:"No validated cycle.",
+ caution:"WADA-prohibited as a GH fragment. The main 'risk' is wasted money — the human evidence is largely negative for efficacy.",
+ evidence:"Six trials, ~900 participants: reassuringly clean safety (no IGF-1 rise, no glucose effect, no antibodies) but it FAILED its largest Phase 2b efficacy endpoint and development was halted in 2007. Rare on this list in being well-tested yet unimpressive.",
+ fda:"unapproved", wada:true},
+
+{cat:"Metabolic & weight loss", nm:"Tesofensine", alias:"NS2330", tier:"B", flag:false, nonpep:true,
+ one:"Potent appetite suppressant — but a small-molecule triple reuptake inhibitor, not a peptide.",
+ what:"Inhibits reuptake of dopamine, noradrenaline and serotonin, suppressing appetite. Grouped with weight peptides in community discussion only.",
+ route:"Oral, daily.",
+ dur:"Investigational.",
+ caution:"Stimulant-type effects — blood pressure and heart rate rises, sleep and mood effects. Not a peptide.",
+ evidence:"Phase 2 obesity results were strong; later development with phentermine (combination) advanced. Listed for completeness with the non-peptide caveat.",
+ fda:"unapproved", wada:false},
+
+/* ============ GH SECRETAGOGUES ============ */
+{cat:"Growth-hormone secretagogues", nm:"Tesamorelin", alias:"Egrifta", tier:"A", flag:false,
+ one:"The only FDA-approved GHRH analog.",
+ what:"A stabilized GHRH analog that stimulates pulsatile GH release from the pituitary; approved to reduce visceral fat in HIV-associated lipodystrophy.",
+ route:"2 mg subcutaneous daily.",
+ dur:"Ongoing for the approved indication; effect reverses on stopping.",
+ caution:"Raises IGF-1 — relevant to any malignancy concern; injection-site reactions, joint symptoms, fluid retention. Off-label 'anti-aging' use is unproven.",
+ evidence:"Approved on Phase 3 data (NEJM 2007 + later visceral-fat studies). The class's reference point for what real GHRH evidence looks like.",
+ fda:"approved", wada:true},
+
+{cat:"Growth-hormone secretagogues", nm:"Sermorelin", alias:"GRF 1-29, Geref", tier:"C", flag:false,
+ one:"Short GHRH fragment, once FDA-approved, now compounded.",
+ what:"A 29-aa GHRH fragment that stimulates GH release; very short half-life (minutes). Can nudge cortisol/prolactin.",
+ route:"Subcutaneous, often nightly (timed to natural GH pulses); frequently dosed multiple times.",
+ dur:"Typically run in multi-month courses in clinic protocols.",
+ caution:"Off-label for adult 'optimization'. Long-term adult safety data is thin. Injection-site reactions, flushing, water retention.",
+ evidence:"Was FDA-approved for pediatric GH-deficiency diagnosis (withdrawn for commercial, not safety, reasons). Mechanism solid; modern adult outcome data limited and mostly clinic-reported.",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth-hormone secretagogues", nm:"CJC-1295 (no DAC)", alias:"Mod GRF 1-29", tier:"C", flag:false,
+ one:"Modified GHRH fragment with a ~30-min half-life — the 'cleaner pulse' GHRH most stacks use.",
+ what:"GHRH analog with four substitutions for stability; binds the pituitary GHRH receptor to amplify GH pulses. Usually paired with ipamorelin.",
+ route:"Subcutaneous, often once or more daily, commonly at night; research-chemical supply.",
+ dur:"Run in cycles of ~2–3 months in clinic conventions.",
+ caution:"No long-term human safety data for chronic combination use. Water retention, tingling, head-rush at dosing.",
+ evidence:"Component PK and GH/IGF-1 responses are documented (Walker 2006 lineage), but there are no large trials of the modern stack. Dosing numbers are clinic convention, not trial-derived.",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth-hormone secretagogues", nm:"CJC-1295 with DAC", alias:"CJC-1295 DAC", tier:"C", flag:false,
+ one:"Long-acting GHRH analog — one shot raises GH/IGF-1 for days.",
+ what:"Adds a Drug Affinity Complex that binds albumin, extending half-life so a single injection sustains GH/IGF-1 elevation for several days (a 'bleed' rather than a pulse).",
+ route:"Subcutaneous, roughly once or twice weekly.",
+ dur:"Cycled; the sustained elevation is a double-edged feature.",
+ caution:"Sustained (non-pulsatile) GH/IGF-1 elevation is less physiologic and raises the IGF-1/growth concern more than pulsatile agents. Long-term human data absent.",
+ evidence:"Walker et al. (2006, JCEM) showed single-dose CJC-1295-DAC raised IGF-1 1.5–3× for days in healthy adults — real but short Phase 1 data. No long-term safety record.",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth-hormone secretagogues", nm:"Ipamorelin", alias:"selective GHRP", tier:"C", flag:false,
+ one:"The 'clean' selective GH secretagogue — the default partner peptide in GH stacks.",
+ what:"A selective ghrelin-receptor (GHS-R1a) agonist that triggers a GH pulse without meaningfully raising cortisol, prolactin or appetite — unlike older GHRPs.",
+ route:"Subcutaneous, often 1–3× daily, frequently with CJC-1295.",
+ dur:"Cycled over weeks to a few months in clinic conventions.",
+ caution:"Off-label everywhere; long-term human safety not established. Same GH/IGF-1 growth concern applies in principle.",
+ evidence:"Selectivity is well-characterized mechanistically, but human outcome data is limited and the popular stack lacks controlled trials. FDA Category 2.",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth-hormone secretagogues", nm:"GHRP-2", alias:"pralmorelin", tier:"C", flag:false,
+ one:"Strong GH-releasing peptide; also bumps cortisol/prolactin and appetite.",
+ what:"Ghrelin-receptor agonist; more potent GH release than ipamorelin but less selective.",
+ route:"Subcutaneous, multiple times daily in conventions.",
+ dur:"Cycled.",
+ caution:"Raises cortisol, prolactin and hunger more than ipamorelin. Used as a GH-stimulation diagnostic in Japan, which is the cleanest part of its record.",
+ evidence:"Some human GH-stimulation studies exist (diagnostic use); chronic recreational use is uncharacterized.",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth-hormone secretagogues", nm:"GHRP-6", alias:"growth hormone releasing peptide 6", tier:"C", flag:false,
+ one:"Older GHRP best known for sharply increasing hunger.",
+ what:"Ghrelin-receptor agonist that strongly stimulates appetite alongside GH release.",
+ route:"Subcutaneous, multiple times daily.",
+ dur:"Cycled.",
+ caution:"Marked appetite spike, cortisol/prolactin rise, water retention. Largely superseded by ipamorelin.",
+ evidence:"Human GH-response data exists from earlier research; modern use is convention-driven.",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth-hormone secretagogues", nm:"Hexarelin", alias:"examorelin", tier:"C", flag:false,
+ one:"Potent GHRP whose effect fades fast with continued use.",
+ what:"Ghrelin-receptor agonist with strong GH release and some direct cardiac-tissue interest.",
+ route:"Subcutaneous, dosed in conventions similar to other GHRPs.",
+ dur:"Notable tachyphylaxis — GH response desensitizes within weeks, limiting useful run length.",
+ caution:"Desensitization, cortisol/prolactin effects. Long-term human data thin.",
+ evidence:"Early human studies on GH release and cardiac effects; not developed to approval.",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth-hormone secretagogues", nm:"MK-677 (Ibutamoren)", alias:"ibutamoren", tier:"B", flag:true, nonpep:true,
+ one:"Orally active ghrelin mimetic with real human trials — and real metabolic downsides. Not a peptide.",
+ what:"A non-peptide ghrelin-receptor agonist taken by mouth that sustainably raises GH and IGF-1.",
+ route:"Oral, once daily (typically evening).",
+ dur:"Can be run continuously, but the side effects often dictate cycling.",
+ caution:"Increases appetite, causes water retention and lethargy, and can worsen insulin sensitivity / raise blood glucose. Sustained IGF-1 elevation feeds the growth/cancer concern. Failed its Alzheimer and hip-fracture-recovery endpoints.",
+ evidence:"Unusually well-studied for this corner of the list (multiple human trials) — but the trials largely showed the metabolic costs and missed clinical endpoints. Grouped with GH peptides; mechanistically a small molecule.",
+ fda:"unapproved", wada:true},
+
+/* ============ GROWTH FACTORS / ANABOLIC ============ */
+{cat:"Growth factors & anabolic", nm:"IGF-1 LR3", alias:"Long R3 IGF-1", tier:"D", flag:true,
+ one:"A souped-up, long-acting IGF-1. Potent, and among the riskier things on this list.",
+ what:"A modified IGF-1 with an extension and substitution that evade IGF binding proteins, giving a much longer half-life and strong anabolic/hypertrophic signaling.",
+ route:"Subcutaneous; research-chemical supply.",
+ dur:"No validated protocol.",
+ caution:"Hypoglycemia (it has insulin-like activity), potential growth of organs/tissues, and a serious theoretical cancer-promotion risk — IGF-1 signaling drives proliferation. The approved IGF-1 (mecasermin/Increlex) is reserved for severe growth failure under strict monitoring; LR3 is a non-approved analog.",
+ evidence:"No human trials of LR3 itself for performance. Mechanism is well-understood, which is exactly why the risks are taken seriously.",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth factors & anabolic", nm:"IGF-1 DES", alias:"DES(1-3) IGF-1", tier:"D", flag:true,
+ one:"Short-acting, locally potent IGF-1 variant; same risk family as LR3.",
+ what:"A truncated IGF-1 with even higher local potency and short duration, intended for site-specific action.",
+ route:"Subcutaneous/local; research-chemical supply.",
+ dur:"No validated protocol.",
+ caution:"Same hypoglycemia and proliferation/cancer concerns as IGF-1 LR3.",
+ evidence:"Essentially no human performance data; preclinical/mechanistic only.",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth factors & anabolic", nm:"MGF / PEG-MGF", alias:"mechano growth factor, IGF-1Ec", tier:"D", flag:false,
+ one:"A muscle IGF-1 splice variant theorized to aid repair; almost entirely unproven in humans.",
+ what:"A locally-expressed IGF-1 splice variant released by mechanically loaded muscle, hypothesized to activate satellite cells. PEGylation extends the synthetic version.",
+ route:"Subcutaneous/IM; research-chemical supply.",
+ dur:"No validated protocol.",
+ caution:"Growth-signaling/cancer concern in principle; purity unknown.",
+ evidence:"Animal and cell data only; human evidence for injected MGF doing anything useful is absent.",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth factors & anabolic", nm:"Follistatin-344", alias:"FST-344", tier:"D", flag:false,
+ one:"Myostatin-binding protein pursued for muscle growth; no human injection data.",
+ what:"A natural protein that binds and neutralizes myostatin and activins, removing a brake on muscle growth.",
+ route:"Injection or, experimentally, gene therapy.",
+ dur:"No validated protocol.",
+ caution:"Blocking activins/myostatin has broad signaling consequences; long-term effects unknown. Counterfeit/mis-sequenced product is common.",
+ evidence:"No direct human peptide-injection trials. Interest rides largely on the more-studied ACE-031, whose trials had safety problems (next entry).",
+ fda:"unapproved", wada:true},
+
+{cat:"Growth factors & anabolic", nm:"ACE-031", alias:"ActRIIB-Fc", tier:"B", flag:true,
+ one:"Real Phase 2 myostatin-pathway data — and a trial halted for a vascular safety signal.",
+ what:"A decoy receptor (ActRIIB-Fc fusion) that traps myostatin and related TGF-β ligands, increasing lean mass.",
+ route:"Subcutaneous (in the original trials).",
+ dur:"Development discontinued.",
+ caution:"Its Duchenne Phase 2 trial was STOPPED because trapping the receptor also suppressed BMP9/BMP10, causing vascular adverse events — nosebleeds, gum bleeding and telangiectasia. That's a concrete, demonstrated harm, not a theoretical one.",
+ evidence:"Acceleron ran genuine Phase 1/2 trials (lean-mass gains shown in postmenopausal women) before halting for the bleeding signal. The strongest human data in this sub-class — and a cautionary one.",
+ fda:"unapproved", wada:true},
+
+/* ============ HEALING / TISSUE REPAIR ============ */
+{cat:"Healing & tissue repair", nm:"BPC-157", alias:"Body Protection Compound 157", tier:"D", flag:true,
+ one:"The single most hyped healing peptide — and one with essentially zero controlled human evidence.",
+ what:"A synthetic 15-aa sequence based on a gastric protein, reported in rodents to speed tendon/ligament/gut healing, partly via nitric-oxide signaling and angiogenesis (new blood-vessel growth).",
+ route:"Subcutaneous (often near the injury) or oral; research-chemical supply.",
+ dur:"Convention is multi-week courses; not validated.",
+ caution:"The very mechanism it's sold on — promoting angiogenesis — is also how tumors recruit blood supply, so there's an unresolved theoretical cancer concern. No human safety database. FDA Category 2.",
+ evidence:"There are NO large randomized human trials. The evidence is almost entirely rodent. Popularity (driven heavily by podcasts) wildly outpaces the science — a point even many pro-peptide clinicians concede.",
+ fda:"unapproved", wada:true},
+
+{cat:"Healing & tissue repair", nm:"TB-500 / Thymosin β4", alias:"TB4, Tβ4", tier:"D", flag:true,
+ one:"BPC-157's usual stack-mate for recovery; same evidence gap, same angiogenesis concern.",
+ what:"TB-500 is a synthetic fragment marketed as thymosin beta-4, a protein involved in actin regulation, cell migration and angiogenesis — hence wound-healing claims.",
+ route:"Subcutaneous/IM; research-chemical supply.",
+ dur:"Loading then maintenance is the convention; unvalidated.",
+ caution:"Angiogenesis/cancer concern as with BPC-157. A 2024 analysis suggested the injected TB-500 fragment may not even be the active species — you may be injecting something whose direct activity is unclear.",
+ evidence:"No controlled human trials of TB-500 for recovery. Full thymosin β4 has had some small human studies (e.g., dry eye, wounds), but that doesn't validate the research-chemical fragment. WADA-banned; an athlete drew a 4-year ban for BPC-157 + TB-500.",
+ fda:"unapproved", wada:true},
+
+{cat:"Healing & tissue repair", nm:"GHK-Cu", alias:"copper tripeptide-1", tier:"C", flag:false,
+ one:"Copper-binding tripeptide with the best human evidence as a topical skin agent.",
+ what:"A naturally occurring copper-carrying tripeptide that remodels gene expression toward repair, stimulates collagen, and suppresses tissue-degrading metalloproteinases.",
+ route:"Topical (cosmetic, best-supported) or injected (less-supported); the routes have very different evidence.",
+ dur:"Topical use is ongoing; injected protocols are convention-based.",
+ caution:"Injectable use for systemic/joint claims is far less validated than topical skin use. Copper load matters if used heavily.",
+ evidence:"Decades of Pickart's work and cosmetic-dermatology data support topical skin benefits. Injectable systemic and neuro claims are early-stage. FDA Category 2 for compounding.",
+ fda:"unapproved", wada:false},
+
+{cat:"Healing & tissue repair", nm:"KPV", alias:"Lys-Pro-Val", tier:"D", flag:false,
+ one:"Anti-inflammatory α-MSH fragment, mostly studied in gut models.",
+ what:"The C-terminal tripeptide of α-MSH; inhibits NF-κB signaling to dampen inflammation and supports gut-barrier integrity, without α-MSH's pigment/appetite effects.",
+ route:"Oral, subcutaneous or topical in conventions.",
+ dur:"Not validated.",
+ caution:"Human data essentially absent; promising mechanism doesn't equal proven benefit.",
+ evidence:"Preclinical (colitis/IBD models, e.g., Koon 2005) is the backbone; no human trials. Often sold in immune 'blends' that overstate the case.",
+ fda:"unapproved", wada:false},
+
+{cat:"Healing & tissue repair", nm:"ARA-290 (Cibinetide)", alias:"ARA290", tier:"B", flag:false,
+ one:"An EPO-derived peptide with genuine Phase 2 human trials for neuropathy.",
+ what:"An 11-aa peptide activating the innate repair receptor (a non-erythropoietic arm of EPO signaling) to reduce neuro-inflammation and promote tissue repair — without raising red cells.",
+ route:"Subcutaneous in trials.",
+ dur:"Investigational courses.",
+ caution:"Not approved; long-term data limited, but the trial safety profile has been reasonable.",
+ evidence:"Has real Phase 2 human data in sarcoidosis-related small-fiber neuropathy and diabetic neuropathy — among the better-evidenced 'repair' peptides, distinct from the BPC/TB rodent tier.",
+ fda:"unapproved", wada:false},
+
+{cat:"Healing & tissue repair", nm:"Pentadeca Arginate (PDA)", alias:"PDA, BPC-157 arginate", tier:"E", flag:true,
+ one:"A brand-new BPC-157 spin-off marketed as a 'more stable' upgrade — with almost nothing published.",
+ what:"A 15-aa arginate-salt variant pitched as a more stable BPC-157 for healing/inflammation.",
+ route:"Subcutaneous; research-chemical/clinic supply.",
+ dur:"Not validated.",
+ caution:"Inherits BPC-157's unproven status and angiogenesis concern with even less data behind it. The 'more stable, safer' framing is marketing, not trial-backed.",
+ evidence:"Essentially no published human or even rigorous preclinical evidence specific to PDA. A marketing-led entry — graded accordingly.",
+ fda:"unapproved", wada:true},
+
+{cat:"Healing & tissue repair", nm:"VIP", alias:"Vasoactive Intestinal Peptide, aviptadil", tier:"C", flag:false,
+ one:"Endogenous peptide used intranasally in niche 'mold illness' protocols; synthetic form trialed for lung disease.",
+ what:"A 28-aa signaling peptide with vasodilatory, immune-modulating and pulmonary effects. Intranasal VIP features in CIRS/chronic-inflammatory-response protocols; IV aviptadil was trialed for ARDS/COVID.",
+ route:"Intranasal (CIRS protocols) or IV (aviptadil trials).",
+ dur:"Protocol-dependent.",
+ caution:"Can cause flushing and blood-pressure drops. The intranasal 'mold illness' use rests on a narrow, contested clinical framework.",
+ evidence:"Aviptadil's COVID/ARDS trials were mixed-to-negative. Intranasal CIRS use is low-evidence and tied to one clinician's protocol. Mechanism is real; the popular use cases are shaky.",
+ fda:"unapproved", wada:false},
+
+/* ============ IMMUNE / THYMIC ============ */
+{cat:"Immune & thymic", nm:"Thymosin Alpha-1", alias:"Tα1, Zadaxin, thymalfasin", tier:"B", flag:false,
+ one:"The best-supported immune peptide — approved in dozens of countries, just not the US.",
+ what:"A 28-aa thymic peptide that tunes T-cell and NK-cell function via Toll-like-receptor signaling; balances immunity (boosts response to pathogens, dampens overreaction).",
+ route:"Subcutaneous, typically 2× weekly in conventions; IV in some hospital settings.",
+ dur:"Course-based depending on indication.",
+ caution:"Not FDA-approved; activating immunity is generally not advised in active autoimmune disease without oversight. Zinc status affects its activity.",
+ evidence:"Approved in 30+ countries (as Zadaxin/thymalfasin) for hepatitis B/C and as a sepsis/immune adjunct, with a 2025 meta-analysis supporting reduced secondary infections in severe illness. Real human data — but US regulatory status lags (Category 2).",
+ fda:"unapproved", wada:false},
+
+{cat:"Immune & thymic", nm:"Thymalin / Thymulin", alias:"thymic peptide extract", tier:"C", flag:false,
+ one:"Older thymic immune peptides with mostly Russian/Eastern-bloc clinical history.",
+ what:"Thymic-derived peptides used to restore/modulate immune (T-cell) function; thymulin is zinc-dependent.",
+ route:"Injection in clinical conventions.",
+ dur:"Course-based.",
+ caution:"Western data and standardization are limited; preparation quality varies.",
+ evidence:"Decades of use and study in Russia/Eastern Europe; sparse modern Western trials, so transferable certainty is low.",
+ fda:"unapproved", wada:false},
+
+{cat:"Immune & thymic", nm:"LL-37", alias:"cathelicidin, CAP-18", tier:"D", flag:false,
+ one:"The body's own antimicrobial peptide; lots of biology, little human therapeutic data.",
+ what:"The only human cathelicidin — broad-spectrum antimicrobial that also neutralizes bacterial endotoxin and modulates inflammation and wound healing.",
+ route:"Subcutaneous/topical/nebulized in conventions.",
+ dur:"Not validated.",
+ caution:"At higher concentrations LL-37 can itself be pro-inflammatory and is implicated in rosacea and some autoimmune processes — more isn't simply better. No approved therapeutic.",
+ evidence:"Strong endogenous-biology literature; therapeutic human trials of administered LL-37 are early/absent. Research-chemical purity caveats apply heavily.",
+ fda:"unapproved", wada:false},
+
+/* ============ COGNITIVE / NEURO ============ */
+{cat:"Cognitive & neuro", nm:"Semax", alias:"ACTH(4-10) analog", tier:"C", flag:false,
+ one:"Russian-approved nootropic; real clinical history there, thin Western replication.",
+ what:"A synthetic ACTH-fragment analog (no hormonal activity) that raises BDNF/NGF and modulates dopamine/serotonin; used for cognition and stroke recovery.",
+ route:"Intranasal, daily.",
+ dur:"Course-based; no tolerance/dependence reported.",
+ caution:"Mild nasal irritation/headache. FDA Category 2 (reflecting absence of FDA-standard evidence, not proven harm).",
+ evidence:"Approved and used in Russia since the 1990s with supporting studies (e.g., BDNF induction, Dolotov 2006), but controlled Western trials are largely absent — so the evidence is real but geographically siloed.",
+ fda:"unapproved", wada:false},
+
+{cat:"Cognitive & neuro", nm:"Selank", alias:"tuftsin analog", tier:"C", flag:false,
+ one:"Russian-approved anxiolytic peptide; calming without sedation.",
+ what:"A synthetic heptapeptide analog of tuftsin that allosterically modulates GABA-A signaling, producing anxiolytic effects distinct from benzodiazepines.",
+ route:"Intranasal, daily.",
+ dur:"Course-based; no dependence reported.",
+ caution:"Western trial data sparse. Notably, Selank was removed from the FDA's Category 2 list in Sept 2024 when nominators withdrew it.",
+ evidence:"Approved as an anxiolytic in Russia since 2009 with supporting research; like Semax, under-replicated in the West.",
+ fda:"unapproved", wada:false},
+
+{cat:"Cognitive & neuro", nm:"Dihexa", alias:"N-hexanoic-Tyr-Ile-(6)-aminohexanoic amide", tier:"D", flag:true,
+ one:"Marketed as wildly potent for new synapse growth — but the headline evidence was retracted and its pathway is pro-cancer.",
+ what:"A small angiotensin-IV-derived compound claimed to drive synaptogenesis via the HGF/c-Met pathway.",
+ route:"Oral/subcutaneous in conventions.",
+ dur:"Not validated.",
+ caution:"HGF/c-Met is a known cancer-promoting pathway — a real, not hypothetical, concern. The widely-cited '10-million-times-more-potent-than-BDNF' figure traces to a RETRACTED study, so vendor potency claims are citing withdrawn data.",
+ evidence:"Animal data only, with the key paper retracted. Its clinical derivative (fosgonimeton, Athira) FAILED the Phase 2 LIFT-AD Alzheimer's trial in Sept 2024 — a meaningful negative signal for the whole approach.",
+ fda:"unapproved", wada:false},
+
+{cat:"Cognitive & neuro", nm:"Cerebrolysin", alias:"porcine neuropeptide mixture", tier:"B", flag:false,
+ one:"The most clinically-studied neuropeptide product here — though its efficacy is debated.",
+ what:"A mixture of low-molecular-weight peptides and amino acids from purified pig brain, small enough to cross the blood-brain barrier and mimic neurotrophic factors (BDNF/NGF/CNTF).",
+ route:"IV (or IM) infusion courses, e.g., daily for ~10–20 days, repeated in cycles.",
+ dur:"Cyclical courses.",
+ caution:"Porcine-derived (allergy/source considerations). Batch-to-batch variability in peptide content. Adverse effects in trials are generally mild/transient.",
+ evidence:"Extensive international trials in stroke and dementia and an established EMA presence — but Cochrane-level reviews are mixed and some find limited benefit, so 'most studied' is not 'clearly effective'.",
+ fda:"unapproved", wada:false},
+
+{cat:"Cognitive & neuro", nm:"P21 (P021)", alias:"Cntf-derived peptidergic compound", tier:"D", flag:false,
+ one:"Preclinical neurogenesis/anti-tau compound; no human data.",
+ what:"A CNTF-derived small peptide mimetic studied for promoting neurogenesis and reducing tau pathology in Alzheimer's models.",
+ route:"Subcutaneous/oral in conventions.",
+ dur:"Not validated.",
+ caution:"No human safety data at all.",
+ evidence:"Animal models only. Sold alongside Semax/Selank as if comparable — it is not.",
+ fda:"unapproved", wada:false},
+
+{cat:"Cognitive & neuro", nm:"PE-22-28", alias:"spadin analog", tier:"D", flag:false,
+ one:"Preclinical fast-acting antidepressant candidate (TREK-1 blocker).",
+ what:"A peptide derived from sortilin/spadin that blocks the TREK-1 potassium channel, an antidepressant target with rapid-onset potential in animals.",
+ route:"Subcutaneous/intranasal in conventions.",
+ dur:"Not validated.",
+ caution:"No human trials; mood-drug self-experimentation is risky.",
+ evidence:"Rodent antidepressant models only.",
+ fda:"unapproved", wada:false},
+
+/* ============ LONGEVITY / MITOCHONDRIAL ============ */
+{cat:"Longevity & mitochondrial", nm:"SS-31 (Elamipretide)", alias:"MTP-131, Bendavia", tier:"B", flag:false,
+ one:"The most clinically-advanced longevity peptide — though its biggest trials missed.",
+ what:"A 4-aa peptide that concentrates in the inner mitochondrial membrane and binds cardiolipin, stabilizing the electron-transport chain and cutting ROS at the source.",
+ route:"Subcutaneous in trials.",
+ dur:"Investigational courses.",
+ caution:"Not approved; injection-site reactions noted. Despite a validated mechanism, clinical benefit hasn't consistently materialized.",
+ evidence:"Multiple Phase 2/3 trials (heart failure PROGRESS-HF, primary mitochondrial myopathy MMPOWER-3) largely MISSED primary endpoints; the strongest signal is in rare Barth syndrome (Breakthrough Therapy designation). Real human data — and a sober reminder that mechanism ≠ outcome.",
+ fda:"unapproved", wada:false},
+
+{cat:"Longevity & mitochondrial", nm:"Epitalon", alias:"Epithalon, Epithalamin, AEDG", tier:"D", flag:false,
+ one:"Telomerase-activating tetrapeptide with a devoted following and weak human evidence.",
+ what:"A 4-aa peptide (from the pineal peptide epithalamin) reported to upregulate telomerase (hTERT) and restore melatonin rhythm.",
+ route:"Subcutaneous in short courses (convention).",
+ dur:"Cycled courses, often a few times yearly in conventions.",
+ caution:"Activating telomerase is theoretically double-edged (telomerase is active in many cancers) — though, unusually, an animal study found epitalon reduced spontaneous tumors, so the data isn't one-directional. Purity caveats apply.",
+ evidence:"In-vitro telomerase activation is documented; human evidence is limited to small, older, methodologically weak Russian studies (Khavinson group). Enthusiasm outruns rigor.",
+ fda:"unapproved", wada:false},
+
+{cat:"Longevity & mitochondrial", nm:"MOTS-c", alias:"mitochondrial-derived peptide", tier:"D", flag:false,
+ one:"An 'exercise-mimetic' mitochondrial peptide — compelling biology, no human trials.",
+ what:"A 16-aa peptide encoded within mitochondrial DNA that activates AMPK (the same metabolic switch as exercise) and signals from mitochondria to the nucleus.",
+ route:"Subcutaneous in conventions.",
+ dur:"Not validated.",
+ caution:"No human dosing or safety data; everything is extrapolated from animals.",
+ evidence:"Strong mechanistic and rodent lifespan/metabolic data; zero controlled human trials. One of the more scientifically interesting D-tier entries.",
+ fda:"unapproved", wada:false},
+
+{cat:"Longevity & mitochondrial", nm:"Humanin", alias:"HN, mitochondrial-derived peptide", tier:"D", flag:false,
+ one:"Cytoprotective mitochondrial peptide; endogenous, but untested as a therapeutic.",
+ what:"A 24-aa mitochondrial-derived peptide that is anti-apoptotic (interacts with Bax/IGFBP-3), neuroprotective against amyloid toxicity, and improves insulin sensitivity in models.",
+ route:"Subcutaneous in conventions.",
+ dur:"Not validated.",
+ caution:"No human therapeutic trials; safety of exogenous dosing unknown.",
+ evidence:"Robust cell/animal literature since 2001; no clinical development.",
+ fda:"unapproved", wada:false},
+
+{cat:"Longevity & mitochondrial", nm:"FOXO4-DRI", alias:"FOXO4-D-Retro-Inverso", tier:"D", flag:true,
+ one:"A senolytic peptide from a single famous mouse study — and nothing like human validation.",
+ what:"A designed peptide that disrupts the FOXO4–p53 interaction in senescent cells, nudging them to self-destruct (senolysis).",
+ route:"Subcutaneous in conventions, often pulsed.",
+ dur:"Not validated.",
+ caution:"Triggering apoptosis systemically is inherently risky; off-target cell death and the lack of any human safety data make self-experimentation especially ill-advised.",
+ evidence:"Essentially one high-profile mouse study (2017). No human trials. The gap between hype and evidence here is enormous.",
+ fda:"unapproved", wada:false},
+
+{cat:"Longevity & mitochondrial", nm:"Glutathione", alias:"GSH", tier:"C", flag:false, nonpep:false,
+ one:"The body's master antioxidant — a tripeptide, so it qualifies; benefits are real but modest and route-dependent.",
+ what:"A tripeptide (glutamate-cysteine-glycine) and the main intracellular antioxidant. Used IV/nasal/liposomal for antioxidant and (in some markets) skin-lightening purposes.",
+ route:"IV, intranasal, liposomal oral; oral GSH has poor bioavailability.",
+ dur:"Ongoing/cyclical depending on use.",
+ caution:"IV use carries infusion/sterility risks; high-dose skin-lightening use is not well-validated and has safety questions.",
+ evidence:"Endogenous role is textbook; supplemental benefit depends heavily on route and indication, and many cosmetic claims are weakly supported.",
+ fda:"unapproved", wada:false},
+
+{cat:"Longevity & mitochondrial", nm:"NAD+ / NMN", alias:"nicotinamide adenine dinucleotide, NMN", tier:"C", flag:false, nonpep:true,
+ one:"Ubiquitous in longevity stacks — but a coenzyme/nucleotide, not a peptide.",
+ what:"NAD+ is a coenzyme central to energy metabolism and sirtuin/DNA-repair signaling; NMN is a precursor. Not peptides — included because they're inseparable from these protocols.",
+ route:"IV (NAD+), oral (NMN/NR).",
+ dur:"Ongoing.",
+ caution:"IV NAD+ commonly causes intense flushing/discomfort during infusion. Long-term human outcome data is thin; some theoretical concerns about feeding proliferation.",
+ evidence:"Human safety trials of NMN exist; hard outcome/longevity benefit in humans remains unproven. Marketing far exceeds the data.",
+ fda:"unapproved", wada:false},
+
+{cat:"Longevity & mitochondrial", nm:"Pinealon", alias:"Khavinson tripeptide", tier:"D", flag:false,
+ one:"A short 'bioregulator' peptide for brain aging from the Russian Khavinson school.",
+ what:"A tripeptide claimed to support neuronal function and resist oxidative/age-related decline; part of the 'short peptide bioregulator' family (with epitalon, vilon, etc.).",
+ route:"Subcutaneous/oral in conventions.",
+ dur:"Cycled courses.",
+ caution:"Western validation absent; the entire bioregulator framework is under-replicated outside Russia.",
+ evidence:"Russian preclinical/clinical reports; no independent Western trials.",
+ fda:"unapproved", wada:false},
+
+/* ============ REPRODUCTIVE / HORMONAL AXIS ============ */
+{cat:"Reproductive & hormonal axis", nm:"Gonadorelin", alias:"GnRH, LHRH, Factrel", tier:"A", flag:false,
+ one:"Synthetic GnRH — well-characterized and approved; common TRT add-on to preserve testicular function.",
+ what:"A decapeptide identical to natural GnRH; pulsatile dosing stimulates pituitary LH/FSH release, driving gonadal hormone production.",
+ route:"Subcutaneous; short half-life means frequent/pulsatile dosing (small doses several times weekly in TRT conventions).",
+ dur:"Ongoing alongside TRT, or diagnostic single-use.",
+ caution:"Continuous (non-pulsatile) dosing paradoxically suppresses the axis. Used off-label in TRT to maintain fertility/testicular size.",
+ evidence:"Long-approved as a diagnostic/therapeutic GnRH; mechanism and pharmacology are textbook. The TRT-adjunct use is off-label but mechanistically sound.",
+ fda:"approved", wada:true},
+
+{cat:"Reproductive & hormonal axis", nm:"Kisspeptin-10", alias:"KP-10, metastin fragment", tier:"B", flag:false,
+ one:"Upstream regulator of the reproductive axis with a strong clean-safety trial record.",
+ what:"A peptide that acts on the hypothalamus to drive GnRH (and thus LH/FSH) release — the master 'on switch' upstream of gonadorelin. Studied for IVF triggering and hypothalamic amenorrhea.",
+ route:"Subcutaneous/IV in trials.",
+ dur:"Investigational; effects within hours.",
+ caution:"Not approved; long-term repeated-dosing data limited.",
+ evidence:"Multiple Imperial College London trials show an excellent acute safety profile (mainly flushing) and effective LH/FSH stimulation; as an IVF trigger it cut ovarian-hyperstimulation risk vs hCG. Among the better-evidenced investigational peptides.",
+ fda:"unapproved", wada:true},
+
+{cat:"Reproductive & hormonal axis", nm:"HCG", alias:"human chorionic gonadotropin", tier:"A", flag:false, nonpep:true,
+ one:"Approved fertility/hormone-axis agent — technically a glycoprotein hormone, not a classic peptide.",
+ what:"Mimics LH at the gonads to stimulate testosterone/ovulation; used in fertility and as a TRT adjunct to maintain testicular function. It's a large glycoprotein, hence the non-peptide tag.",
+ route:"Subcutaneous/IM injection.",
+ dur:"Ongoing or cycle-based by indication.",
+ caution:"Can cause estrogen rise/gynecomastia in men; OHSS risk in fertility use. Prescription drug, not a research chemical.",
+ evidence:"Long-approved with extensive clinical use. Included because it lives in the same TRT/fertility conversations as these peptides.",
+ fda:"approved", wada:true},
+
+/* ============ SLEEP / OTHER ============ */
+{cat:"Sleep & other", nm:"DSIP", alias:"Delta Sleep-Inducing Peptide", tier:"D", flag:false,
+ one:"A 1970s 'sleep peptide' that, when actually tested in humans, largely didn't deliver.",
+ what:"A 9-aa neuropeptide linked to slow-wave sleep and stress/cortisol modulation; also studied in opioid/alcohol withdrawal.",
+ route:"Subcutaneous/IV in conventions, evening dosing.",
+ dur:"Not validated.",
+ caution:"Effects are inconsistent; don't expect a reliable sedative. Research-chemical purity caveats.",
+ evidence:"A double-blind human insomnia study concluded short-term DSIP is 'not likely to be of major therapeutic benefit', and a later review literally called it an 'unresolved riddle'. The biology is intriguing; the human payoff isn't there.",
+ fda:"unapproved", wada:false},
+
+{cat:"Sleep & other", nm:"Adipotide", alias:"FTPP, prohibitin-targeting peptide", tier:"E", flag:true,
+ one:"A 'fat-melting' peptide that worked in monkeys by killing fat-tissue blood supply — and damaged their kidneys.",
+ what:"A pro-apoptotic peptide that targets the vasculature feeding white fat, causing fat-tissue regression.",
+ route:"Injection (animal studies).",
+ dur:"Not for human use.",
+ caution:"In primate studies it caused dose-dependent kidney toxicity. There is no human safety data, and the known animal harm is serious. This is not a reasonable thing to self-administer.",
+ evidence:"Primate weight-loss data exists but is overshadowed by renal toxicity; no human trials. Graded E for the combination of no human data and a demonstrated organ-toxicity signal.",
+ fda:"unapproved", wada:true},
+];
+
+/* ---------- TIER META ---------- */
+const TIERS = {
+  A:{c:"var(--tA)", label:"Approved & robust"},
+  B:{c:"var(--tB)", label:"Strong human data"},
+  C:{c:"var(--tC)", label:"Limited human data"},
+  D:{c:"var(--tD)", label:"Preclinical only"},
+  E:{c:"var(--tE)", label:"Minimal / cautionary"},
+};
+const CAT_DESC = {
+  "Tanning & pigmentation":"Melanocortin-receptor agonists that drive skin pigment. One is an approved drug for a rare disease; the popular one is unapproved everywhere.",
+  "Sexual function":"Compounds that act on desire or arousal centrally (brain) rather than vascularly.",
+  "Metabolic & weight loss":"The incretin (GLP-1 and friends) revolution plus a couple of GH-fragment and non-peptide stragglers. This is where the strongest evidence on the whole list lives.",
+  "Growth-hormone secretagogues":"Agents that prod your own pituitary to release growth hormone, via GHRH receptors, ghrelin receptors, or both. One is approved; the rest are off-label/research.",
+  "Growth factors & anabolic":"Direct anabolic/growth signaling (IGF-1 variants, myostatin blockers). The highest mechanistic-risk corner of the list.",
+  "Healing & tissue repair":"The recovery/anti-inflammatory peptides — the most hyped and least human-tested category, dominated by an angiogenesis-based mechanism that's also the cancer caveat.",
+  "Immune & thymic":"Immune-tuning peptides, several with real approval and use outside the US.",
+  "Cognitive & neuro":"Nootropic and neuroprotective peptides. Several are approved in Russia; one's headline evidence was retracted.",
+  "Longevity & mitochondrial":"Anti-aging and mitochondrial compounds. The mechanisms are fascinating and the human evidence is mostly absent — with SS-31 the partial exception.",
+  "Reproductive & hormonal axis":"Agents acting on the GnRH→LH/FSH→gonad axis, often used around TRT and fertility.",
+  "Sleep & other":"Outliers that don't sit cleanly elsewhere.",
+};
+
+/* ---------- STATE ---------- */
+const state = { q:"", cat:"All", tiers:new Set(["A","B","C","D","E"]) };
+
+/* ---------- DISTRIBUTION BAR ---------- */
+(function buildDist(){
+  const counts = {A:0,B:0,C:0,D:0,E:0};
+  C.forEach(c=>counts[c.tier]++);
+  const total = C.length;
+  const bar = document.getElementById('distbar');
+  const labels = document.getElementById('distlabels');
+  ["A","B","C","D","E"].forEach(t=>{
+    const seg = document.createElement('div');
+    seg.className='seg'; seg.style.background=TIERS[t].c;
+    seg.style.flex = counts[t]; seg.textContent = counts[t]>1?counts[t]:(counts[t]||'');
+    seg.title = `${t} — ${TIERS[t].label}: ${counts[t]}`;
+    seg.onclick=()=>{ // solo this tier
+      const only = state.tiers.size===1 && state.tiers.has(t);
+      state.tiers = only ? new Set(["A","B","C","D","E"]) : new Set([t]);
+      syncLegend(); render();
+    };
+    bar.appendChild(seg);
+  });
+  labels.innerHTML = ["A","B","C","D","E"].map(t=>`<span>${t} · ${counts[t]} · ${TIERS[t].label}</span>`).join('')
+    + `<span style="color:var(--accent)">${total} total compounds</span>`;
+})();
+
+/* ---------- LEGEND (tier filter) ---------- */
+const legend = document.getElementById('legend');
+["A","B","C","D","E"].forEach(t=>{
+  const b=document.createElement('button');
+  b.className='tierbtn'; b.dataset.tier=t; b.dataset.on="true";
+  b.innerHTML=`<span class="dot" style="background:${TIERS[t].c}"></span>${t}`;
+  b.onclick=()=>{ state.tiers.has(t)?state.tiers.delete(t):state.tiers.add(t); if(state.tiers.size===0){state.tiers=new Set(["A","B","C","D","E"]);} syncLegend(); render(); };
+  legend.appendChild(b);
+});
+function syncLegend(){ legend.querySelectorAll('.tierbtn').forEach(b=>b.dataset.on = state.tiers.has(b.dataset.tier)?"true":"false"); }
+
+/* ---------- CATEGORY CHIPS ---------- */
+const cats = ["All", ...Object.keys(CAT_DESC)];
+const catWrap = document.getElementById('cats');
+cats.forEach(cat=>{
+  const chip=document.createElement('button');
+  chip.className='catchip'; chip.textContent=cat; chip.dataset.on = cat==="All"?"true":"false";
+  chip.onclick=()=>{ state.cat=cat; catWrap.querySelectorAll('.catchip').forEach(c=>c.dataset.on = c.textContent===cat?"true":"false"); render(); };
+  catWrap.appendChild(chip);
+});
+
+/* ---------- SEARCH ---------- */
+document.getElementById('search').addEventListener('input', e=>{ state.q=e.target.value.toLowerCase().trim(); render(); });
+
+/* ---------- RENDER ---------- */
+const root=document.getElementById('cards');
+const empty=document.getElementById('empty');
+function matches(c){
+  if(!state.tiers.has(c.tier)) return false;
+  if(state.cat!=="All" && c.cat!==state.cat) return false;
+  if(state.q){
+    const hay=(c.nm+" "+c.alias+" "+c.one+" "+c.what+" "+c.cat).toLowerCase();
+    if(!hay.includes(state.q)) return false;
+  }
+  return true;
+}
+function cardHTML(c,i){
+  const t=TIERS[c.tier];
+  const fdaPill = c.fda==="approved"
+    ? `<span class="pill fda-y">FDA approved</span>`
+    : `<span class="pill fda-n">Not FDA approved</span>`;
+  const wadaPill = c.wada ? `<span class="pill wada">WADA banned</span>` : `<span class="pill">WADA: not listed</span>`;
+  return `<div class="card" style="border-left-color:${t.c}" data-i="${i}">
+    <div class="head" role="button" tabindex="0" aria-expanded="false">
+      <div class="tier" style="background:${t.c}" title="${t.label}">${c.tier}</div>
+      <div class="meta">
+        <div class="nm">${c.nm}${c.flag?'<span class="flag" title="Notable safety signal">▲</span>':''}${c.nonpep?'<span class="nonpep">not a peptide</span>':''}</div>
+        <div class="alias">${c.alias}</div>
+        <div class="one">${c.one}</div>
+      </div>
+    </div>
+    <div class="detail">
+      <div class="field"><div class="k">What it does</div><div class="v">${c.what}</div></div>
+      <div class="field"><div class="k">Route & frequency (reported convention)</div><div class="v">${c.route}</div></div>
+      <div class="field"><div class="k">Duration & cycling</div><div class="v">${c.dur}</div></div>
+      <div class="field warn"><div class="k">Cautions / don't-do</div><div class="v">${c.caution}</div></div>
+      <div class="field"><div class="k">Evidence & disputes</div><div class="v">${c.evidence}</div></div>
+      <div class="status">${fdaPill}${wadaPill}<span class="pill" style="border-color:${t.c};color:${t.c}">Tier ${c.tier} · ${t.label}</span></div>
+    </div>
+  </div>`;
+}
+function render(){
+  const shown = C.map((c,i)=>({c,i})).filter(o=>matches(o.c));
+  empty.style.display = shown.length?'none':'block';
+  if(state.cat==="All"){
+    // group by category
+    const groups={};
+    shown.forEach(o=>{ (groups[o.c.cat]=groups[o.c.cat]||[]).push(o); });
+    root.innerHTML = Object.keys(CAT_DESC).filter(cat=>groups[cat]).map(cat=>{
+      const items=groups[cat];
+      return `<section class="cat">
+        <h2>${cat}<span class="ct">${items.length} shown</span></h2>
+        <p class="catdesc">${CAT_DESC[cat]}</p>
+        <div class="grid">${items.map(o=>cardHTML(o.c,o.i)).join('')}</div>
+      </section>`;
+    }).join('');
+  } else {
+    root.innerHTML = `<section class="cat">
+      <h2>${state.cat}<span class="ct">${shown.length} shown</span></h2>
+      <p class="catdesc">${CAT_DESC[state.cat]}</p>
+      <div class="grid">${shown.map(o=>cardHTML(o.c,o.i)).join('')}</div>
+    </section>`;
+  }
+  bindCards();
+}
+function bindCards(){
+  root.querySelectorAll('.card .head').forEach(h=>{
+    const toggle=()=>{ const card=h.closest('.card'); const open=card.classList.toggle('open'); h.setAttribute('aria-expanded',open); };
+    h.onclick=toggle;
+    h.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } };
+  });
+}
+document.getElementById('expandAll').onclick=()=>root.querySelectorAll('.card').forEach(c=>{c.classList.add('open');c.querySelector('.head').setAttribute('aria-expanded','true');});
+document.getElementById('collapseAll').onclick=()=>root.querySelectorAll('.card').forEach(c=>{c.classList.remove('open');c.querySelector('.head').setAttribute('aria-expanded','false');});
+
+render();
+
+// Hide controls bar on scroll-down, reveal on scroll-up
+(function(){
+  const ctrl = document.querySelector('.controls');
+  let lastY = 0, ticking = false;
+  window.addEventListener('scroll', function(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      const y = window.scrollY;
+      if(y <= 10){
+        ctrl.classList.remove('hide'); // always show at top of page
+      } else if(y > lastY + 4){
+        ctrl.classList.add('hide');    // scrolling down → hide
+      } else if(y < lastY - 4){
+        ctrl.classList.remove('hide'); // scrolling up → show
+      }
+      lastY = y;
+      ticking = false;
+    });
+  }, {passive: true});
+})();
+</script>
+</body>
+</html>
