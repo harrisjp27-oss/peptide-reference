@@ -39,7 +39,8 @@
   .dist .seg:hover{filter:brightness(1.12)}
   .dist .labels{display:flex;justify-content:space-between;margin-top:8px;font-family:var(--mono);font-size:10.5px;color:#7d8a99;flex-wrap:wrap;gap:6px}
 
-  .controls{position:sticky;top:53px;z-index:30;background:rgba(246,247,249,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px 22px}
+  .controls{position:sticky;top:53px;z-index:30;background:rgba(246,247,249,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px 22px;transition:transform .3s ease}
+  .controls.hide{transform:translateY(-110%)}
   .controls .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .search{flex:1;min-width:200px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:9px 13px}
   .search input{border:0;outline:0;font-family:var(--sans);font-size:14.5px;width:100%;background:transparent;color:var(--ink)}
@@ -1162,6 +1163,28 @@ $('expandAll').onclick=()=>$('cards').querySelectorAll('.card').forEach(c=>{c.cl
 $('collapseAll').onclick=()=>$('cards').querySelectorAll('.card').forEach(c=>{c.classList.remove('open');c.querySelector('.head').setAttribute('aria-expanded','false');});
 document.querySelectorAll('.tabbtn').forEach(b=>b.onclick=()=>loadTab(b.dataset.tab));
 loadTab('pep');
+
+// Hide controls bar on scroll-down, reveal on scroll-up
+(function(){
+  const ctrl = document.querySelector('.controls');
+  let lastY = 0, ticking = false;
+  window.addEventListener('scroll', function(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      const y = window.scrollY;
+      if(y <= 10){
+        ctrl.classList.remove('hide');
+      } else if(y > lastY + 4){
+        ctrl.classList.add('hide');
+      } else if(y < lastY - 4){
+        ctrl.classList.remove('hide');
+      }
+      lastY = y;
+      ticking = false;
+    });
+  }, {passive: true});
+})();
 </script>
 </body>
 </html>
