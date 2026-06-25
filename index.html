@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peptide Reference — Evidence-Graded Compendium</title>
+<title>Compound Reference — Peptides &amp; Steroids</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,33 +11,35 @@
   :root{
     --ink:#0E1620; --ink-2:#1b2735; --paper:#F6F7F9; --surface:#ffffff;
     --line:#dfe3e8; --muted:#5b6776; --muted-2:#869; --accent:#0FA3A3;
-    --tA:#1F9D6B; --tB:#2D7FD5; --tC:#C98A00; --tD:#E2701E; --tE:#C8402E;
-    --flag:#C8402E;
+    --tA:#1F9D6B; --tB:#2D7FD5; --tC:#C98A00; --tD:#E2701E; --tE:#C8402E; --flag:#C8402E;
     --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
-    --sans:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    --r:10px;
+    --sans:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; --r:10px;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
-
-  /* ---------- HEADER ---------- */
-  header.top{background:var(--ink);color:#eef2f6;padding:34px 22px 30px}
   .wrap{max-width:1180px;margin:0 auto}
+
+  /* TAB BAR */
+  .tabbar{position:sticky;top:0;z-index:50;background:var(--ink);border-bottom:1px solid #223}
+  .tabbar{background:var(--ink)}
+  .tabbar .wrap{display:flex;gap:0;align-items:stretch}
+  .tabbtn{flex:0 0 auto;background:none;border:0;border-bottom:3px solid transparent;color:#7d8a99;font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:16px 24px;cursor:pointer;transition:color .15s,border-color .15s}
+  .tabbtn:hover{color:#c3ccd6}
+  .tabbtn[data-on="true"]{color:#fff;border-bottom-color:var(--accent)}
+
+  header.top{background:var(--ink);color:#eef2f6;padding:14px 22px 30px}
   .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
   header.top h1{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.02em;margin:0 0 10px;line-height:1.04}
-  header.top p.thesis{max-width:760px;color:#aeb9c6;font-size:15.5px;margin:0}
+  header.top p.thesis{max-width:800px;color:#aeb9c6;font-size:15.5px;margin:0}
   header.top p.thesis b{color:#eef2f6;font-weight:600}
-
-  /* distribution bar */
   .dist{margin-top:26px}
   .dist .bar{display:flex;height:34px;border-radius:6px;overflow:hidden;border:1px solid #2a3a4d}
   .dist .seg{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:600;color:#fff;cursor:pointer;transition:filter .15s}
   .dist .seg:hover{filter:brightness(1.12)}
   .dist .labels{display:flex;justify-content:space-between;margin-top:8px;font-family:var(--mono);font-size:10.5px;color:#7d8a99;flex-wrap:wrap;gap:6px}
 
-  /* ---------- CONTROLS ---------- */
-  .controls{position:sticky;top:0;z-index:30;background:rgba(246,247,249,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px 22px;transition:transform .3s ease}
+  .controls{position:sticky;top:53px;z-index:30;background:rgba(246,247,249,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px 22px;transition:transform .3s ease}
   .controls.hide{transform:translateY(-110%)}
   .controls .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .search{flex:1;min-width:200px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:9px 13px}
@@ -50,22 +52,20 @@
   .tierbtn:hover{border-color:var(--muted)}
   .toolbtn{font-family:var(--mono);font-size:11px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:8px 12px;cursor:pointer;color:var(--muted)}
   .toolbtn:hover{color:var(--ink);border-color:var(--muted)}
-
   .cats{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
   .catchip{font-size:12.5px;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 13px;cursor:pointer;color:var(--muted);white-space:nowrap;transition:all .12s}
   .catchip[data-on="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
   .catchip:hover{border-color:var(--muted)}
 
-  /* ---------- BODY ---------- */
   main{max-width:1180px;margin:0 auto;padding:8px 22px 80px}
-
   .note{background:#fff6f3;border:1px solid #f3d3c8;border-left:4px solid var(--flag);border-radius:var(--r);padding:16px 18px;margin:22px 0;font-size:13.5px;color:#6a3326}
   .note h3{margin:0 0 6px;font-size:13px;font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--flag)}
+  .note b{color:#4d241b}
   details.method{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin:14px 0 6px;padding:0}
   details.method summary{cursor:pointer;padding:14px 18px;font-weight:600;font-size:14px;list-style:none}
   details.method summary::-webkit-details-marker{display:none}
   details.method summary::before{content:"+ ";font-family:var(--mono);color:var(--accent)}
-  details.method[open] summary::before{content:"– "}
+  details.method[open] summary::before{content:"\2013 "}
   details.method .body{padding:0 18px 18px;font-size:13.5px;color:var(--muted)}
   details.method .body p{margin:6px 0}
   .ladder{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:8px 0;font-size:13px}
@@ -74,8 +74,7 @@
   section.cat{margin-top:34px}
   section.cat > h2{font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:7px;margin:0 0 4px;display:flex;justify-content:space-between;align-items:baseline}
   section.cat > h2 .ct{font-size:11px;color:var(--muted);font-weight:400}
-  section.cat > p.catdesc{color:var(--muted);font-size:13.5px;margin:8px 0 16px;max-width:780px}
-
+  section.cat > p.catdesc{color:var(--muted);font-size:13.5px;margin:8px 0 16px;max-width:820px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:13px}
 
   .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;border-left:5px solid var(--line);transition:box-shadow .15s}
@@ -87,8 +86,7 @@
   .card .alias{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:2px;word-break:break-word}
   .card .one{font-size:13.5px;color:var(--muted);margin-top:7px}
   .tier{flex:0 0 auto;font-family:var(--mono);font-weight:600;font-size:12px;color:#fff;width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center}
-  .nonpep{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;background:#eef0f3;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 5px;text-transform:uppercase}
-
+  .nonpep,.vet{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;background:#eef0f3;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 5px;text-transform:uppercase}
   .card .detail{display:none;border-top:1px dashed var(--line);padding:4px 15px 16px}
   .card.open .detail{display:block}
   .card.open{box-shadow:0 6px 22px rgba(14,22,32,.1)}
@@ -99,80 +97,53 @@
   .field.warn .v{color:#7a3b2e}
   .status{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}
   .pill{font-family:var(--mono);font-size:10.5px;border-radius:5px;padding:3px 8px;border:1px solid var(--line);color:var(--muted)}
-  .pill.fda-y{background:#eaf6f0;border-color:#bfe6d3;color:#137a52}
-  .pill.fda-n{background:#fdeeea;border-color:#f3cfc4;color:#b5402c}
+  .pill.fda-y,.pill.med-y{background:#eaf6f0;border-color:#bfe6d3;color:#137a52}
+  .pill.fda-n,.pill.med-n{background:#fdeeea;border-color:#f3cfc4;color:#b5402c}
   .pill.wada{background:#fff8e6;border-color:#f0dca0;color:#8a6a00}
-
   .empty{text-align:center;color:var(--muted);font-family:var(--mono);font-size:13px;padding:60px 0;display:none}
-
   footer{max-width:1180px;margin:0 auto;padding:30px 22px 60px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
-  footer a{color:var(--accent)}
-
-  @media (max-width:620px){.grid{grid-template-columns:1fr}}
+  @media (max-width:620px){.grid{grid-template-columns:1fr}.tabbtn{padding:14px 16px}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 </head>
 <body>
 
-<header class="top">
-  <div class="wrap">
-    <p class="eyebrow">Evidence-Graded Compendium · Updated Jun 2026</p>
-    <h1>The Peptide Reference</h1>
-    <p class="thesis">A working map of the peptides (and a few non-peptides that travel with them) people actually use or debate — graded honestly by <b>how much real human testing exists</b>, not by how loudly they're marketed. Most of this list has never been through a controlled human trial. The color of each compound tells you where it really stands.</p>
-    <div class="dist">
-      <div class="bar" id="distbar"></div>
-      <div class="labels" id="distlabels"></div>
-    </div>
-  </div>
-</header>
+<nav class="tabbar"><div class="wrap">
+  <button class="tabbtn" data-tab="pep" data-on="true">Peptides</button>
+  <button class="tabbtn" data-tab="ster" data-on="false">Steroids</button>
+</div></nav>
 
-<div class="controls">
-  <div class="wrap">
-    <div class="row">
-      <label class="search">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input id="search" type="text" placeholder="Search name, alias, or mechanism (e.g. GLP-1, telomerase, BPC)…" aria-label="Search compounds">
-      </label>
-      <div class="legend" id="legend"></div>
-      <button class="toolbtn" id="expandAll">Expand all</button>
-      <button class="toolbtn" id="collapseAll">Collapse all</button>
-    </div>
-    <div class="cats" id="cats"></div>
+<header class="top"><div class="wrap">
+  <p class="eyebrow" id="eyebrow"></p>
+  <h1 id="h1"></h1>
+  <p class="thesis" id="thesis"></p>
+  <div class="dist"><div class="bar" id="distbar"></div><div class="labels" id="distlabels"></div></div>
+</div></header>
+
+<div class="controls"><div class="wrap">
+  <div class="row">
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="text" aria-label="Search compounds">
+    </label>
+    <div class="legend" id="legend"></div>
+    <button class="toolbtn" id="expandAll">Expand all</button>
+    <button class="toolbtn" id="collapseAll">Collapse all</button>
   </div>
-</div>
+  <div class="cats" id="cats"></div>
+</div></div>
 
 <main>
-  <div class="note">
-    <h3>Read this first</h3>
-    This is an information reference, not medical advice and not an endorsement. The dosing and frequency figures below are the <b>conventions reported in the literature or clinic/vendor sources</b> — for the unapproved compounds they are not validated, not standardized, and not safe to assume. Realities that cut across almost the entire list: (1) Most of these are sold as "research chemicals" with <b>no purity, sterility, or dose guarantee</b> — contamination with endotoxin or mis-sequenced peptide is a documented problem. (2) In late 2023 the FDA placed ~17–19 of these in <b>Category 2</b> (barred from compounding); a Pharmacy Compounding Advisory Committee review of 7 of them is scheduled for <b>July 23–24, 2026</b>, and an HHS statement in Feb 2026 floated moving ~14 back to Category 1 — announced, not finalized. (3) Almost everything that promotes tissue growth or new blood-vessel formation carries a <b>theoretical cancer-acceleration concern</b> that has not been ruled out in humans. (4) Nearly all are <b>banned by WADA</b>, and the U.S. DoD adopts the WADA list — relevant if you're ever drug-tested for sport, employment, or clearance.
-  </div>
-
-  <details class="method">
-    <summary>How the evidence tiers work, and how to read the conflicts</summary>
-    <div class="body">
-      <p>Each compound gets a single grade for <b>evidence maturity</b> — how far it has actually been tested in humans — plus a <span style="color:var(--flag)">▲ flag</span> when there's a specific, non-trivial safety signal beyond the general cautions above.</p>
-      <div class="ladder">
-        <span class="code" style="background:var(--tA)">A</span><span><b>Approved &amp; robust.</b> FDA or another major regulator approved it, backed by large randomized trials. The known quantity.</span>
-        <span class="code" style="background:var(--tB)">B</span><span><b>Strong human data.</b> Substantial human trials (Phase 2/3) but not approved for this use, or approved only outside the US with good data.</span>
-        <span class="code" style="background:var(--tC)">C</span><span><b>Limited human data.</b> Small or dated human studies, foreign approval with little Western replication, or an approved drug used far off-label.</span>
-        <span class="code" style="background:var(--tD)">D</span><span><b>Preclinical only.</b> Animal and test-tube data; little or no human evidence. This is where most "research peptides" actually sit.</span>
-        <span class="code" style="background:var(--tE)">E</span><span><b>Minimal / cautionary.</b> Essentially anecdotal, or development was halted, or the headline evidence was retracted.</span>
-      </div>
-      <p><b>On disagreements:</b> sources conflict most on (a) whether a compound causes cancer or just theoretically could, (b) "standard" doses (vendor/clinic numbers vary widely and aren't trial-derived), and (c) regulatory status, which is actively shifting in 2026. Where a specific claim is contested, it's called out in the compound's <i>Evidence &amp; disputes</i> field. Vendor and telehealth pages — which make up a large share of what's searchable — consistently <b>overstate benefit and understate uncertainty</b>; they were used for dosing conventions and naming, while clinical, regulatory, and PubMed sources were weighted for efficacy and safety claims.</p>
-    </div>
-  </details>
-
+  <div id="noteWrap"></div>
+  <div id="methodWrap"></div>
   <div id="cards"></div>
   <div class="empty" id="empty">No compounds match those filters.</div>
 </main>
-
-<footer>
-  <div>Compiled from a mix of regulatory filings (FDA, EMA), peer-reviewed trials and reviews (NEJM, PubMed/PMC, Cochrane), dermatology and clinical bodies, WADA/anti-doping sources, and clinic/vendor protocol pages (weighted low for any safety or efficacy claim). Evidence status is current to June 2026 and several items are actively under regulatory review. Nothing here is medical advice — decisions about any of these compounds belong with a licensed clinician who can see your labs and history.</div>
-</footer>
+<footer id="footer"></footer>
 
 <script>
-const C = [
+const PEPTIDES = [
 /* ============ TANNING / MELANOCORTIN PIGMENTATION ============ */
 {cat:"Tanning & pigmentation", nm:"Afamelanotide", alias:"Melanotan I, MT-1, Scenesse", tier:"A", flag:false,
  one:"The legitimate, FDA-approved melanocortin — but approved for light protection in a rare disease, not for cosmetic tanning.",
@@ -695,18 +666,345 @@ const C = [
  dur:"Not for human use.",
  caution:"In primate studies it caused dose-dependent kidney toxicity. There is no human safety data, and the known animal harm is serious. This is not a reasonable thing to self-administer.",
  evidence:"Primate weight-loss data exists but is overshadowed by renal toxicity; no human trials. Graded E for the combination of no human data and a demonstrated organ-toxicity signal.",
- fda:"unapproved", wada:true},
-];
+ fda:"unapproved", wada:true},];
+const STEROIDS = [
+/* ============ GLUCOCORTICOIDS / CORTICOSTEROIDS ============ */
+{cat:"Glucocorticoids (anti-inflammatory)", nm:"Cortisol", alias:"hydrocortisone, the stress hormone", tier:"A", flag:false,
+ one:"The body's own glucocorticoid — and the clearest illustration that 'steroid' ≠ 'muscle drug.'",
+ what:"Binds the glucocorticoid receptor to switch off inflammatory genes and modulate metabolism (raises blood glucose, mobilizes fat and protein). Released by the adrenal glands under stress.",
+ use:"As hydrocortisone: adrenal insufficiency (Addison's), inflammation, allergic reactions, skin conditions.",
+ prop:"Catabolic to muscle — it breaks tissue down, the opposite of anabolic steroids. Anti-inflammatory and immunosuppressive.",
+ risk:"Chronic excess (Cushing's-type) causes muscle wasting, bone loss, weight gain and moon face, thin skin, high blood sugar, immune suppression, mood changes, and adrenal suppression if exogenous steroids are stopped abruptly.",
+ med:true, legal:"Endogenous · Rx/OTC topical", wada:true},
 
-/* ---------- TIER META ---------- */
-const TIERS = {
+{cat:"Glucocorticoids (anti-inflammatory)", nm:"Prednisone", alias:"Deltasone", tier:"A", flag:false,
+ one:"The everyday oral anti-inflammatory steroid — nothing to do with muscle.",
+ what:"A synthetic glucocorticoid prodrug converted in the liver to prednisolone; a potent, broad anti-inflammatory and immunosuppressant.",
+ use:"Asthma/COPD flares, autoimmune disease, allergic reactions, inflammatory conditions, transplant immunosuppression.",
+ prop:"~4× the glucocorticoid potency of cortisol with little salt-retaining effect.",
+ risk:"Same glucocorticoid downsides scaled by dose/duration: weight gain, mood/sleep disturbance, blood-sugar rise, bone thinning, infection risk, and adrenal suppression — must be tapered, not stopped suddenly.",
+ med:true, legal:"Rx (prescription)", wada:true},
+
+{cat:"Glucocorticoids (anti-inflammatory)", nm:"Prednisolone", alias:"active form of prednisone", tier:"A", flag:false,
+ one:"The already-active version of prednisone.",
+ what:"The biologically active glucocorticoid that prednisone becomes; same receptor, same effects, useful when liver conversion is a concern.",
+ use:"Same as prednisone; often preferred in children and liver disease.",
+ prop:"Active without hepatic conversion.",
+ risk:"Identical glucocorticoid risk profile to prednisone.",
+ med:true, legal:"Rx", wada:true},
+
+{cat:"Glucocorticoids (anti-inflammatory)", nm:"Methylprednisolone", alias:"Medrol, Solu-Medrol", tier:"A", flag:false,
+ one:"A stronger glucocorticoid, common as the 'dose-pack' or IV pulse.",
+ what:"A more potent synthetic glucocorticoid, available oral and IV for rapid, strong anti-inflammatory effect.",
+ use:"Severe flares, acute spinal-cord injury historically, IV pulses in autoimmune crises.",
+ prop:"Higher potency, minimal mineralocorticoid (salt) activity.",
+ risk:"As with prednisone, amplified at higher potency; short bursts carry mood/sleep/glucose effects.",
+ med:true, legal:"Rx", wada:true},
+
+{cat:"Glucocorticoids (anti-inflammatory)", nm:"Dexamethasone", alias:"Decadron", tier:"A", flag:false,
+ one:"The very potent, long-acting glucocorticoid.",
+ what:"A high-potency, long-half-life glucocorticoid with essentially no salt-retaining activity.",
+ use:"Cerebral/spinal edema, severe COVID-19 (mortality benefit shown), chemo-induced nausea, croup, severe inflammation.",
+ prop:"~25–30× cortisol's anti-inflammatory potency; long duration.",
+ risk:"Strong and sustained glucocorticoid effects; significant blood-sugar elevation and mood effects even short-term.",
+ med:true, legal:"Rx", wada:true},
+
+{cat:"Glucocorticoids (anti-inflammatory)", nm:"Triamcinolone & Betamethasone", alias:"Kenalog, Celestone", tier:"A", flag:false,
+ one:"Potent injectable/topical glucocorticoids — the 'cortisone shot' family.",
+ what:"Potent glucocorticoids formulated for joint/soft-tissue injection and topical/inhaled use.",
+ use:"Joint and tendon injections, dermatology, allergic rhinitis, and (betamethasone) fetal lung maturation in preterm labor.",
+ prop:"Local, depot delivery limits but doesn't eliminate systemic exposure.",
+ risk:"Repeated joint injections can degrade cartilage/tendon; local tissue/skin atrophy and depigmentation; systemic effects with frequent use.",
+ med:true, legal:"Rx", wada:true},
+
+{cat:"Glucocorticoids (anti-inflammatory)", nm:"Budesonide", alias:"Pulmicort, Entocort", tier:"A", flag:false,
+ one:"The 'targeted' glucocorticoid — high first-pass metabolism keeps it mostly local.",
+ what:"A glucocorticoid extensively cleared on first pass through the liver, so inhaled or gut-released forms act locally with fewer systemic effects.",
+ use:"Asthma (inhaled), Crohn's/microscopic colitis (gut-release), allergic rhinitis.",
+ prop:"Local action, lower systemic glucocorticoid burden than oral prednisone.",
+ risk:"Inhaled: oral thrush, hoarseness. Systemic effects are reduced but not zero at higher/longer use.",
+ med:true, legal:"Rx", wada:false},
+
+{cat:"Glucocorticoids (anti-inflammatory)", nm:"Fludrocortisone", alias:"Florinef", tier:"A", flag:false,
+ one:"The mineralocorticoid — it manages salt and blood pressure, not inflammation or muscle.",
+ what:"A synthetic steroid with strong mineralocorticoid activity (acts like aldosterone): tells the kidney to retain sodium and water.",
+ use:"Adrenal insufficiency (with a glucocorticoid), and low blood pressure / orthostatic hypotension.",
+ prop:"Salt-retaining; raises blood pressure and can drop potassium.",
+ risk:"Fluid overload, high blood pressure, low potassium, swelling.",
+ med:true, legal:"Rx", wada:false},
+
+{cat:"Glucocorticoids (anti-inflammatory)", nm:"Aldosterone", alias:"endogenous mineralocorticoid", tier:"A", flag:false,
+ one:"The body's salt-and-water hormone; included to round out the steroid map.",
+ what:"The principal natural mineralocorticoid, made by the adrenal cortex; regulates sodium/potassium balance and blood pressure via the kidney.",
+ use:"Not used as a drug; its synthetic stand-in is fludrocortisone.",
+ prop:"Pure mineralocorticoid — no anti-inflammatory or anabolic role.",
+ risk:"Excess (e.g., a tumor, Conn's syndrome) causes high blood pressure and low potassium.",
+ med:true, legal:"Endogenous hormone", wada:false},
+
+/* ============ ANABOLIC-ANDROGENIC STEROIDS ============ */
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Testosterone", alias:"Test, the reference androgen", tier:"A", flag:false,
+ one:"The benchmark every other AAS is measured against — and a legitimate medicine for men who lack it.",
+ what:"The primary male androgen. Binds the androgen receptor to drive muscle protein synthesis and male sexual characteristics; also converts (aromatizes) to estradiol, which matters for bone, mood and libido.",
+ use:"FDA-approved for male hypogonadism and delayed puberty; also gender-affirming care. Performance/physique use is off-label and illicit.",
+ prop:"The 100:100 anabolic-to-androgenic reference point; aromatizes to estrogen.",
+ risk:"Supraphysiologic use suppresses your own production — testicular shrinkage and infertility that can be slow or, occasionally, permanent to recover. Also raises red-cell mass (clot risk), worsens lipids, and can cause acne, male-pattern hair loss in the predisposed, and estrogen effects (gynecomastia).",
+ med:true, legal:"Schedule III · Rx", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Testosterone esters", alias:"enanthate, cypionate, propionate, undecanoate", tier:"A", flag:false,
+ one:"Not different drugs — just testosterone with a 'time-release' tail attached.",
+ what:"An ester is a fatty chain bonded to testosterone so that, once injected in oil, it releases slowly as the body cleaves it off. Longer ester = slower, longer release; the active hormone is identical testosterone.",
+ use:"All are testosterone delivery forms; the ester is chosen for how often dosing is needed (a pharmacokinetic, not pharmacologic, choice).",
+ prop:"Changes release rate and duration only — same receptor, same effects, same risks as testosterone.",
+ risk:"Identical to testosterone; longer esters linger longer if a problem arises.",
+ med:true, legal:"Schedule III · Rx", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Nandrolone", alias:"Deca-Durabolin, NPP, 19-nortestosterone", tier:"B", flag:false,
+ one:"A classic 'mass' steroid known for joint comfort — and for blunting libido.",
+ what:"A 19-nor androgen: strongly anabolic, mildly androgenic, aromatizes only weakly but has progestogenic activity.",
+ use:"Has legitimate medical history for anemia of chronic kidney disease, cachexia and osteoporosis; now mostly seen in performance use.",
+ prop:"Progestogenic — that, not estrogen, drives its characteristic sexual side effects ('deca dick') and prolactin issues. Detectable for many months.",
+ risk:"Strong suppression of natural testosterone, sexual dysfunction, mood effects; the progestin activity adds problems estrogen-blockers don't fix.",
+ med:true, legal:"Schedule III · Rx", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Boldenone", alias:"Equipoise, EQ", tier:"C", flag:false, vet:true,
+ one:"A veterinary steroid (for horses) popular for slow, steady gains and appetite.",
+ what:"A testosterone derivative with a double bond that makes it milder and slower-acting; aromatizes mildly and raises red-cell production.",
+ use:"Approved for veterinary use; no human medical indication. Performance use only in people.",
+ prop:"Slow-building, increases appetite and red blood cells.",
+ risk:"Raised hematocrit (clot risk), suppression, mild estrogenic effects; very long detection window.",
+ med:false, legal:"Schedule III · vet only", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Trenbolone", alias:"Tren, Finaplix (cattle implant)", tier:"C", flag:true, vet:true,
+ one:"One of the most potent and harshest AAS in existence — originally a cattle-growth implant.",
+ what:"A 19-nor androgen that binds the receptor extremely strongly, doesn't aromatize, but is progestogenic. Powerful effects on muscle and fat.",
+ use:"Veterinary/livestock origin; no human medical use. Strictly performance in people.",
+ prop:"Non-aromatizing yet progestogenic; very high potency.",
+ risk:"Among the worst tolerated: night sweats, insomnia, severe anxiety/aggression, rapid heart rate, marked cardiovascular and lipid harm, kidney stress, and pronounced libido/mood swings. A frequently-cited example of high reward chased at high, sometimes dangerous, cost.",
+ med:false, legal:"Schedule III · vet/illicit", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Methandrostenolone", alias:"Dianabol, Dbol, methandienone", tier:"D", flag:true,
+ one:"The iconic oral 'bulker' from the golden-era — fast gains, hard on the liver.",
+ what:"An orally active (17α-alkylated) testosterone derivative that strongly builds mass and strength and aromatizes to estrogen.",
+ use:"Had early medical use; now essentially illicit/performance.",
+ prop:"17α-alkylated oral → hepatotoxic; aromatizes heavily → water retention and estrogen effects.",
+ risk:"Liver strain, high blood pressure, gynecomastia and bloating from estrogen, suppression, lipid harm. Much of the rapid 'gain' is water that leaves on stopping.",
+ med:false, legal:"Schedule III · illicit", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Oxandrolone", alias:"Anavar, Var", tier:"B", flag:false,
+ one:"The mild oral with real medical legitimacy — gentle by AAS standards, not by ordinary ones.",
+ what:"An orally active (17α-alkylated) DHT-derived steroid; mildly anabolic, doesn't aromatize, relatively gentle on the liver for an oral.",
+ use:"FDA-approved history for weight gain after surgery/trauma/burns, and used in Turner syndrome and severe burns; studied in women and children for that reason.",
+ prop:"Among the mildest orals; no estrogen conversion; lowers SHBG.",
+ risk:"Still suppresses natural production and harms HDL cholesterol; liver effects milder but not absent; commonly counterfeited.",
+ med:true, legal:"Schedule III · Rx", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Stanozolol", alias:"Winstrol, Winny", tier:"D", flag:true,
+ one:"A 'drying' steroid famous from the Ben Johnson scandal — notably rough on lipids and joints.",
+ what:"A DHT-derived steroid available oral or injectable (both forms are 17α-alkylated, so even the injection strains the liver). Non-aromatizing; strongly lowers SHBG.",
+ use:"Had medical use for hereditary angioedema and anemia; now largely veterinary/illicit.",
+ prop:"Non-aromatizing 'hard/dry' look; depletes joint lubrication (joint pain is common); crushes HDL.",
+ risk:"Significant liver toxicity, severe negative lipid changes, joint pain/dryness, tendon-injury concern, suppression.",
+ med:false, legal:"Schedule III · vet/illicit", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Oxymetholone", alias:"Anadrol, A-bombs", tier:"B", flag:true,
+ one:"A powerful oral mass-builder with a legitimate anemia indication — and serious liver toxicity.",
+ what:"An orally active (17α-alkylated) steroid producing large, rapid gains in mass and strength.",
+ use:"FDA-approved for certain anemias; otherwise illicit performance use.",
+ prop:"Doesn't aromatize yet causes estrogen-like bloating/gyno through other receptor activity; strong appetite suppression for some.",
+ risk:"One of the most hepatotoxic orals; substantial water retention and blood-pressure rise; lipid harm; suppression. Much of the gain is water.",
+ med:true, legal:"Schedule III · Rx", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Drostanolone", alias:"Masteron", tier:"C", flag:false,
+ one:"A 'cosmetic/hardening' steroid that was once a breast-cancer drug.",
+ what:"A DHT-derived, non-aromatizing steroid with mild anabolic and anti-estrogenic properties.",
+ use:"Historically used to treat breast cancer (now discontinued for that); performance/cosmetic use today.",
+ prop:"Non-aromatizing; can slightly blunt estrogen; valued for a 'dry, hard' look only at low body fat.",
+ risk:"Androgenic effects (accelerated hair loss in the predisposed), suppression, lipid effects; modest anabolic payoff.",
+ med:false, legal:"Schedule III · discontinued medical", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Methenolone", alias:"Primobolan, Primo", tier:"C", flag:false,
+ one:"The 'mild and clean' steroid of reputation — gentle, expensive, and heavily faked.",
+ what:"A DHT-derived, non-aromatizing steroid (oral and injectable) with mild anabolic action.",
+ use:"Niche medical history (anemia, supportive use); mostly performance now.",
+ prop:"Mild, non-estrogenic, well-tolerated relative to harsher AAS — but also modest in effect.",
+ risk:"Still suppressive and lipid-affecting; the oral form is not 17α-alkylated (gentler on liver) but poorly bioavailable; frequently counterfeited.",
+ med:false, legal:"Schedule III · niche/foreign", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Mesterolone", alias:"Proviron", tier:"B", flag:false,
+ one:"A weak oral androgen used more as a supportive agent than a mass-builder.",
+ what:"An orally active DHT-derived androgen, weakly anabolic; binds SHBG and can free up other hormones.",
+ use:"Has medical use for androgen deficiency and some male-fertility contexts.",
+ prop:"Not a tissue-builder; non-aromatizing; lowers SHBG.",
+ risk:"Androgenic effects, suppression at higher exposure; relatively liver-friendly (not 17α-alkylated).",
+ med:true, legal:"Schedule III · Rx (some regions)", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Fluoxymesterone", alias:"Halotestin, Halo", tier:"E", flag:true,
+ one:"An extreme strength/aggression oral — and one of the most toxic steroids made.",
+ what:"A highly androgenic, orally active (17α-alkylated) steroid producing sharp strength and aggression with little mass.",
+ use:"Had medical use (hypogonadism, breast cancer); largely abandoned.",
+ prop:"Non-aromatizing, intensely androgenic; used by some strength/combat athletes right before competition for aggression and strength.",
+ risk:"Severe liver toxicity, drastic lipid damage, marked aggression/mood disturbance. Hard to justify outside its narrow historical medical niche.",
+ med:false, legal:"Schedule III · largely abandoned", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Methyltestosterone", alias:"Metandren", tier:"E", flag:true,
+ one:"One of the first oral androgens — and a cautionary tale in liver toxicity.",
+ what:"An orally active (17α-alkylated) form of testosterone; aromatizes to estrogen.",
+ use:"Early hypogonadism treatment; now mostly replaced because of its toxicity.",
+ prop:"17α-alkylated oral with estrogen conversion.",
+ risk:"Strongly linked to liver damage including peliosis hepatis (blood-filled liver cysts) and liver tumors — a key reason oral testosterone went out of favor.",
+ med:false, legal:"Schedule III · mostly withdrawn", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Trestolone", alias:"MENT, 7α-methyl-19-nortestosterone", tier:"D", flag:true,
+ one:"An experimental ultra-potent androgen studied as a male contraceptive.",
+ what:"A 19-nor androgen many times more potent than testosterone; aromatizes to a potent estrogen.",
+ use:"Investigated for male hormonal contraception and hypogonadism (its strong suppression of sperm is the contraceptive mechanism); illicit performance use.",
+ prop:"Extremely suppressive by design; aromatizes strongly.",
+ risk:"Profound shutdown of natural production, heavy estrogen conversion, limited safety data in performance contexts.",
+ med:false, legal:"Schedule III · experimental", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Dihydrotestosterone (DHT)", alias:"androstanolone, Andractim", tier:"B", flag:false,
+ one:"The body's most potent natural androgen — and the parent of many DHT-derived AAS.",
+ what:"Testosterone reduced by 5α-reductase into a more potent, non-aromatizable androgen. Drives much of the 'masculinizing' action in skin, hair and prostate.",
+ use:"Available as a topical gel (androstanolone) in some countries for androgen deficiency; mostly of educational/endogenous interest.",
+ prop:"Cannot convert to estrogen; the chemical template for Masteron, Primobolan, Anavar, Winstrol and others.",
+ risk:"Drives male-pattern hair loss and prostate growth; suppressive if dosed exogenously.",
+ med:true, legal:"Schedule III · Rx (some regions)", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Dihydroboldenone", alias:"DHB, 1-testosterone", tier:"D", flag:false,
+ one:"A potent, non-aromatizing designer/illicit steroid notorious for painful injections.",
+ what:"A reduced form of boldenone; strongly anabolic, doesn't aromatize.",
+ use:"No medical use; black-market performance only.",
+ prop:"Non-aromatizing and potent; injection-site pain/inflammation is a frequent complaint.",
+ risk:"Suppression, lipid harm, injection-site reactions; little human safety data.",
+ med:false, legal:"Schedule III · illicit", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Methasterone", alias:"Superdrol", tier:"D", flag:true,
+ one:"A former 'prohormone' supplement that turned out to be a potent, toxic oral steroid.",
+ what:"An orally active (17α-alkylated) DHT-derived steroid; very potent, sold openly until banned.",
+ use:"None medical; was marketed as a supplement, then scheduled under the Designer Anabolic Steroid Control Act of 2014.",
+ prop:"17α-alkylated and non-aromatizing; deceptively marketed as 'safe' before its toxicity was clear.",
+ risk:"Severe liver toxicity (cases of liver injury reported from supplement-era use), harsh lipid effects, lethargy.",
+ med:false, legal:"Schedule III · banned designer", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Mibolerone", alias:"Cheque Drops", tier:"C", flag:true, vet:true,
+ one:"A canine veterinary drug used illicitly for short bursts of aggression.",
+ what:"An extremely potent oral 19-nor androgen developed for dogs (to suppress estrus).",
+ use:"Veterinary only; misused by some combat/strength athletes for pre-event aggression.",
+ prop:"Tiny amounts are powerful; very androgenic and hepatotoxic.",
+ risk:"Rapid liver strain and aggression; narrow margin; not intended for humans at all.",
+ med:false, legal:"Schedule III · vet only", wada:true},
+
+{cat:"Anabolic-androgenic steroids (AAS)", nm:"Norethandrolone", alias:"Nilevar", tier:"E", flag:false,
+ one:"An early oral AAS, largely of historical interest now.",
+ what:"One of the first synthetic oral anabolic steroids (a 19-nor compound).",
+ use:"Used mid-20th-century for wasting/anemia; superseded and largely withdrawn.",
+ prop:"Progestogenic 19-nor; 17α-alkylated oral.",
+ risk:"Liver toxicity and the usual 19-nor suppression/progestin effects; obsolete.",
+ med:false, legal:"Schedule III · obsolete", wada:true},
+
+/* ============ ESTROGENS & PROGESTINS ============ */
+{cat:"Estrogens & progestins", nm:"Estradiol", alias:"E2, primary estrogen", tier:"A", flag:false,
+ one:"The main female sex steroid — a major steroid class that has nothing to do with muscle-building.",
+ what:"Binds estrogen receptors to regulate the female reproductive system, bone density, lipids and mood. In men it's made by aromatizing testosterone and matters for bone and libido.",
+ use:"Menopausal HRT, contraception, gender-affirming care, some cancers.",
+ prop:"The hormone that aromatizing AAS convert into — which is why estrogen side effects appear with those compounds.",
+ risk:"Clot risk, and tissue-dependent cancer considerations; too little or too much both cause problems.",
+ med:true, legal:"Rx", wada:false},
+
+{cat:"Estrogens & progestins", nm:"Ethinylestradiol", alias:"synthetic oral estrogen", tier:"A", flag:false,
+ one:"The synthetic estrogen that made the oral contraceptive pill possible.",
+ what:"A chemically stabilized estrogen that survives oral dosing, used to suppress ovulation and regulate cycles.",
+ use:"Combined oral contraceptives, some HRT.",
+ prop:"Orally potent and long-lived versus natural estradiol.",
+ risk:"Clot risk (higher than some alternatives), especially with smoking/age.",
+ med:true, legal:"Rx", wada:false},
+
+{cat:"Estrogens & progestins", nm:"Progesterone", alias:"P4, natural progestin", tier:"A", flag:false,
+ one:"The natural pregnancy/menstrual-cycle steroid; another non-muscle steroid class.",
+ what:"Binds progesterone receptors to prepare and maintain the uterine lining and support pregnancy; also a precursor to other steroids.",
+ use:"HRT (with estrogen), fertility support, menstrual regulation.",
+ prop:"Progestogenic — the activity that the 19-nor AAS (nandrolone, trenbolone) partially mimic.",
+ risk:"Sedation, mood effects; generally well tolerated in therapeutic use.",
+ med:true, legal:"Rx", wada:false},
+
+{cat:"Estrogens & progestins", nm:"Medroxyprogesterone", alias:"Provera, Depo-Provera", tier:"A", flag:false,
+ one:"A synthetic progestin used for contraception and HRT.",
+ what:"A long-acting synthetic progestin that suppresses ovulation and modifies the uterine lining.",
+ use:"Injectable contraception, HRT, some menstrual and oncologic uses.",
+ prop:"Progestin-only; the depot form lasts about three months.",
+ risk:"Reversible bone-density loss, return-to-fertility delay, mood/weight effects.",
+ med:true, legal:"Rx", wada:false},
+
+{cat:"Estrogens & progestins", nm:"Levonorgestrel", alias:"Plan B, Mirena progestin", tier:"A", flag:false,
+ one:"A widely used synthetic progestin in contraception.",
+ what:"A potent synthetic progestin that prevents ovulation and thickens cervical mucus.",
+ use:"Emergency contraception, hormonal IUDs, combined pills.",
+ prop:"Progestin with mild androgenic character.",
+ risk:"Irregular bleeding, mood effects; very widely used with a well-characterized profile.",
+ med:true, legal:"Rx/OTC (emergency)", wada:false},
+
+/* ============ PRECURSORS & PROHORMONES ============ */
+{cat:"Androgen precursors & prohormones", nm:"DHEA", alias:"dehydroepiandrosterone", tier:"C", flag:false,
+ one:"An adrenal precursor sold over the counter — legally exempt from the steroid laws.",
+ what:"A precursor hormone the body converts into testosterone and estrogen. Explicitly excluded from the legal definition of 'anabolic steroid,' so it's sold as a supplement.",
+ use:"Marketed for aging, libido, mood; some genuine use in adrenal insufficiency. Evidence for most consumer claims is weak.",
+ prop:"Converts variably to sex hormones; effects are modest and individual.",
+ risk:"Can raise androgens/estrogens unpredictably (acne, hair, hormonal shifts); banned in sport despite OTC status.",
+ med:false, legal:"OTC supplement (US)", wada:true},
+
+{cat:"Androgen precursors & prohormones", nm:"Pregnenolone", alias:"the 'mother' steroid", tier:"C", flag:false,
+ one:"The upstream precursor all steroid hormones are built from; sold OTC.",
+ what:"Made from cholesterol, it sits at the top of the steroid-synthesis tree and can become progesterone, DHEA, cortisol and downstream hormones. Also acts as a neurosteroid.",
+ use:"Marketed for memory/mood/stress; human evidence is limited.",
+ prop:"A precursor and neuroactive steroid rather than a direct muscle agent.",
+ risk:"Unpredictable downstream hormone effects; thin safety/efficacy data.",
+ med:false, legal:"OTC supplement (US)", wada:false},
+
+{cat:"Androgen precursors & prohormones", nm:"Androstenedione", alias:"'andro'", tier:"D", flag:false,
+ one:"The 1990s 'andro' supplement — now a controlled prohormone.",
+ what:"A direct precursor that converts to testosterone (and estrogen). Famous from the McGwire era; later scheduled.",
+ use:"None legitimate now; was a bodybuilding supplement before being controlled.",
+ prop:"Converts to active hormones, so it carries AAS-like effects and risks.",
+ risk:"Raises estrogen as well as testosterone; suppression and the usual androgen side effects; controlled substance.",
+ med:false, legal:"Schedule III", wada:true},
+
+{cat:"Androgen precursors & prohormones", nm:"Designer prohormones", alias:"1-androstenediol, 'legal' precursors", tier:"D", flag:true,
+ one:"A moving target of supplement-shelf compounds that convert into real steroids.",
+ what:"A class of androgen precursors engineered to skirt the law and convert in the body into active anabolic steroids.",
+ use:"Sold as supplements until each is scheduled; the 2014 Designer Anabolic Steroid Control Act created a fast process to ban new ones.",
+ prop:"Effectively AAS with extra liver burden from conversion; quality and contents are unreliable.",
+ risk:"Liver toxicity (many are 17α-alkylated), suppression, mislabeled contents; 'legal/natural' framing is marketing, not safety.",
+ med:false, legal:"Schedule III as scheduled", wada:true},
+
+/* ============ OTHER STEROID-CLASS COMPOUNDS ============ */
+{cat:"Other steroid-class compounds", nm:"Cholesterol", alias:"the parent molecule", tier:"A", flag:false,
+ one:"Not a drug — the raw material every steroid in this document is built from.",
+ what:"The lipid backbone from which the body synthesizes all steroid hormones: cortisol, aldosterone, testosterone, estrogen, progesterone and vitamin D.",
+ use:"Structural and metabolic; included to show why these compounds share a 'steroid' shape.",
+ prop:"The four-ring steroid nucleus common to the entire class.",
+ risk:"As a blood lipid, elevated LDL drives cardiovascular disease — which is part of why AAS that wreck lipids matter.",
+ med:true, legal:"Endogenous", wada:false},
+
+{cat:"Other steroid-class compounds", nm:"Vitamin D", alias:"cholecalciferol, a secosteroid", tier:"A", flag:false,
+ one:"A 'steroid' by chemistry that builds bone, not muscle — the category's range in one example.",
+ what:"A secosteroid (a steroid with one ring opened) that acts like a hormone to regulate calcium, bone and immune function.",
+ use:"Bone health, deficiency correction, immune support.",
+ prop:"Steroid-derived structurally, but functionally a vitamin/hormone with no anabolic-muscle role.",
+ risk:"Toxicity only at very high chronic intake (high calcium); otherwise safe and necessary.",
+ med:true, legal:"OTC supplement", wada:false},];
+const PEP_TIERS = {
   A:{c:"var(--tA)", label:"Approved & robust"},
   B:{c:"var(--tB)", label:"Strong human data"},
   C:{c:"var(--tC)", label:"Limited human data"},
   D:{c:"var(--tD)", label:"Preclinical only"},
-  E:{c:"var(--tE)", label:"Minimal / cautionary"},
-};
-const CAT_DESC = {
+  E:{c:"var(--tE)", label:"Minimal / cautionary"},};
+const STER_TIERS = {
+  A:{c:"var(--tA)", label:"Core medicine"},
+  B:{c:"var(--tB)", label:"Legitimate but niche"},
+  C:{c:"var(--tC)", label:"Vet / foreign / discontinued"},
+  D:{c:"var(--tD)", label:"Mainly illicit / designer"},
+  E:{c:"var(--tE)", label:"Withdrawn / notably toxic"},};
+const PEP_CATDESC = {
   "Tanning & pigmentation":"Melanocortin-receptor agonists that drive skin pigment. One is an approved drug for a rare disease; the popular one is unapproved everywhere.",
   "Sexual function":"Compounds that act on desire or arousal centrally (brain) rather than vascularly.",
   "Metabolic & weight loss":"The incretin (GLP-1 and friends) revolution plus a couple of GH-fragment and non-peptide stragglers. This is where the strongest evidence on the whole list lives.",
@@ -717,126 +1015,150 @@ const CAT_DESC = {
   "Cognitive & neuro":"Nootropic and neuroprotective peptides. Several are approved in Russia; one's headline evidence was retracted.",
   "Longevity & mitochondrial":"Anti-aging and mitochondrial compounds. The mechanisms are fascinating and the human evidence is mostly absent — with SS-31 the partial exception.",
   "Reproductive & hormonal axis":"Agents acting on the GnRH→LH/FSH→gonad axis, often used around TRT and fertility.",
-  "Sleep & other":"Outliers that don't sit cleanly elsewhere.",
+  "Sleep & other":"Outliers that don't sit cleanly elsewhere.",};
+const STER_CATDESC = {
+  "Glucocorticoids (anti-inflammatory)":"The 'steroids' a doctor actually prescribes most. They suppress inflammation and the immune system and are catabolic — they break muscle down. Mentioning them matters because they're the opposite of what gym culture means by 'steroids.'",
+  "Anabolic-androgenic steroids (AAS)":"The muscle/testosterone class — the only group that builds tissue. All are Schedule III. The differences between them come down to a few properties: oral vs injectable, whether they convert to estrogen, whether they're progestogenic, and how androgenic they are.",
+  "Estrogens & progestins":"The female-axis sex steroids. Included because they're a major steroid class and because AAS that aromatize turn into estrogen — so understanding them explains a whole set of side effects.",
+  "Androgen precursors & prohormones":"Upstream molecules the body converts into active hormones. DHEA is legally carved out and sold OTC; engineered 'prohormones' are effectively steroids with extra liver cost and are scheduled as fast as they appear.",
+  "Other steroid-class compounds":"The bookends — the molecule everything is built from, and a 'steroid' that builds bone instead of muscle. They show that 'steroid' is a chemical family, not a single drug.",};
+
+const CONFIG = {
+  pep:{
+    kind:'pep', accent:'#0FA3A3', data:PEPTIDES, tiers:PEP_TIERS, catDesc:PEP_CATDESC,
+    eyebrow:'Evidence-Graded Compendium \u00b7 Updated Jun 2026',
+    title:'The Peptide Reference',
+    search:'Search name, alias, or mechanism (e.g. GLP-1, telomerase, BPC)\u2026',
+    distUnit:'compounds',
+    thesis:'A working map of the peptides (and a few non-peptides that travel with them) people actually use or debate \u2014 graded honestly by <b>how much real human testing exists</b>, not by how loudly they\u2019re marketed. Most of this list has never been through a controlled human trial. The color of each compound tells you where it really stands.',
+    note:'<div class="note"><h3>Read this first</h3>This is an information reference, not medical advice and not an endorsement. The dosing and frequency figures are the <b>conventions reported in the literature or clinic/vendor sources</b> \u2014 for the unapproved compounds they are not validated, standardized, or safe to assume. Realities across the list: (1) most are sold as \u201cresearch chemicals\u201d with <b>no purity or sterility guarantee</b>; (2) in late 2023 the FDA placed ~17\u201319 of these in <b>Category 2</b> (barred from compounding), with a review of 7 of them scheduled for <b>July 23\u201324, 2026</b> and a Feb 2026 HHS statement floating a partial rollback \u2014 announced, not finalized; (3) anything that promotes tissue or blood-vessel growth carries a <b>theoretical cancer-acceleration concern</b> not ruled out in humans; (4) nearly all are <b>WADA-banned</b>, and the DoD adopts that list.</div>',
+    method:'<details class="method"><summary>How the evidence tiers work, and how to read the conflicts</summary><div class="body"><p>Each compound gets a single grade for <b>evidence maturity</b> \u2014 how far it has actually been tested in humans \u2014 plus a <span style="color:var(--flag)">\u25b2 flag</span> when there\u2019s a specific safety signal beyond the general cautions.</p><div class="ladder"><span class="code" style="background:var(--tA)">A</span><span><b>Approved &amp; robust.</b> FDA or another major regulator approved it, backed by large randomized trials.</span><span class="code" style="background:var(--tB)">B</span><span><b>Strong human data.</b> Substantial human trials (Phase 2/3) but not approved for this use, or approved only outside the US.</span><span class="code" style="background:var(--tC)">C</span><span><b>Limited human data.</b> Small or dated studies, foreign approval with little Western replication, or an approved drug used far off-label.</span><span class="code" style="background:var(--tD)">D</span><span><b>Preclinical only.</b> Animal and test-tube data; little or no human evidence \u2014 where most \u201cresearch peptides\u201d sit.</span><span class="code" style="background:var(--tE)">E</span><span><b>Minimal / cautionary.</b> Anecdotal, halted, or the headline evidence was retracted.</span></div><p>Where a claim is contested it\u2019s called out in the compound\u2019s <i>Evidence &amp; disputes</i> field. Vendor/telehealth pages consistently overstate benefit; they were used for naming and dosing conventions only, with clinical/regulatory/PubMed sources weighted for safety and efficacy.</p></div></details>',
+    footer:'Compiled from regulatory filings (FDA, EMA), peer-reviewed trials/reviews (NEJM, PubMed/PMC, Cochrane), anti-doping sources, and clinic/vendor protocol pages (weighted low for any safety/efficacy claim). Current to June 2026; several items are under active regulatory review. Not medical advice.'
+  },
+  ster:{
+    kind:'ster', accent:'#7C5CD6', data:STEROIDS, tiers:STER_TIERS, catDesc:STER_CATDESC,
+    eyebrow:'Educational Reference \u00b7 What each one is &amp; does',
+    title:'The Steroid Reference',
+    search:'Search name, alias, or property (e.g. aromatize, 19-nor, anti-inflammatory)\u2026',
+    distUnit:'entries',
+    thesis:'\u201cSteroid\u201d is a <b>chemical shape</b>, not one drug. This maps the real categories \u2014 the anti-inflammatory ones, the muscle ones, the sex-hormone ones \u2014 and explains, for each, <b>what it is, how it works, what it\u2019s used for, and what it costs you</b>. It deliberately contains <b>no doses, frequencies, cycle lengths, or what-to-stack-with-what</b>. Color = how legitimate a medicine it is; <span style="color:#b58af0">\u25b2</span> marks the ones unusually harsh even by this category\u2019s standards.',
+    note:'<div class="note"><h3>Read this first</h3>Education, not a how-to and not medical advice. The anabolic-androgenic steroids here are <b>Schedule III controlled substances</b> \u2014 possession without a prescription is a federal crime, and nearly all are WADA-banned (which the DoD adopts). The key fact: in a healthy young man whose hormones are already at lifetime peak, the main thing these add is <b>risk</b> \u2014 including suppression of your own testosterone that can be slow or permanent to recover, plus cardiovascular damage that builds quietly. \u201cReversible vs permanent\u201d is called out per compound because that distinction is the whole game. Dosing, schedules and stacking are left out on purpose \u2014 those are the parts that turn a reference into an operating manual.</div>',
+    method:'<details class="method"><summary>How the tiers work, what\u2019s covered, and what\u2019s deliberately left out</summary><div class="body"><p>Most steroids work \u2014 that was never the question \u2014 so the color grades <b>medical legitimacy / role</b>, and a <span style="color:var(--flag)">\u25b2 flag</span> marks an unusually severe harm profile.</p><div class="ladder"><span class="code" style="background:var(--tA)">A</span><span><b>Core medicine.</b> Established therapeutic agent in wide clinical use.</span><span class="code" style="background:var(--tB)">B</span><span><b>Legitimate but niche/older.</b> Real medical use that\u2019s now limited or specialized.</span><span class="code" style="background:var(--tC)">C</span><span><b>Veterinary / foreign / discontinued.</b> Little or no current US human medical use.</span><span class="code" style="background:var(--tD)">D</span><span><b>Mainly illicit / designer.</b> Performance or black-market use, minimal medical role.</span><span class="code" style="background:var(--tE)">E</span><span><b>Withdrawn / notably toxic.</b> Abandoned or so harsh it\u2019s hard to justify.</span></div><p><b>Two structural AAS families</b> explain most side-effect differences: <b>17\u03b1-alkylated</b> compounds survive being swallowed (oral) but strain the liver; <b>17\u03b2-esterified</b> ones are oil injectables that spare it. Whether a compound <b>aromatizes</b> (\u2192 estrogen) or is <b>progestogenic</b> (the 19-nor family) sets its side-effect profile.</p><p><b>Deliberately excluded:</b> all dosing/frequency/cycle length/PCT; stack-or-don\u2019t pairing logic; cycle-support ancillaries (anastrozole, tamoxifen, clomiphene aren\u2019t steroids; exemestane is structurally steroidal but functions as an ancillary); SARMs (non-steroidal); and the hundreds of obscure designer steroids. Every steroid is built from <b>cholesterol</b>.</p></div></details>',
+    footer:'Compiled from pharmacology references (StatPearls/NCBI), DEA/Federal Register scheduling rules (Anabolic Steroid Control Acts 1990/2004, Designer Anabolic Steroid Control Act 2014), FDA labeling, and WADA. Steroid pharmacology is stable science; legitimate medical decisions belong with a physician who runs bloodwork. Not medical advice or an endorsement of non-prescribed use.'
+  }
 };
 
-/* ---------- STATE ---------- */
+let cur = CONFIG.pep;
 const state = { q:"", cat:"All", tiers:new Set(["A","B","C","D","E"]) };
+const $=id=>document.getElementById(id);
 
-/* ---------- DISTRIBUTION BAR ---------- */
-(function buildDist(){
-  const counts = {A:0,B:0,C:0,D:0,E:0};
-  C.forEach(c=>counts[c.tier]++);
-  const total = C.length;
-  const bar = document.getElementById('distbar');
-  const labels = document.getElementById('distlabels');
+function loadTab(key){
+  cur = CONFIG[key];
+  document.documentElement.style.setProperty('--accent', cur.accent);
+  document.querySelectorAll('.tabbtn').forEach(b=>b.dataset.on = b.dataset.tab===key ? "true":"false");
+  state.q=""; state.cat="All"; state.tiers=new Set(["A","B","C","D","E"]);
+  $('eyebrow').innerHTML=cur.eyebrow; $('h1').textContent=cur.title; $('thesis').innerHTML=cur.thesis;
+  $('search').value=""; $('search').placeholder=cur.search;
+  $('noteWrap').innerHTML=cur.note; $('methodWrap').innerHTML=cur.method;
+  $('footer').innerHTML='<div>'+cur.footer+'</div>';
+  buildDist(); buildLegend(); buildCats(); render();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+function buildDist(){
+  const counts={A:0,B:0,C:0,D:0,E:0}; cur.data.forEach(c=>counts[c.tier]++);
+  const bar=$('distbar'), labels=$('distlabels'); bar.innerHTML=''; 
   ["A","B","C","D","E"].forEach(t=>{
-    const seg = document.createElement('div');
-    seg.className='seg'; seg.style.background=TIERS[t].c;
-    seg.style.flex = counts[t]; seg.textContent = counts[t]>1?counts[t]:(counts[t]||'');
-    seg.title = `${t} — ${TIERS[t].label}: ${counts[t]}`;
-    seg.onclick=()=>{ // solo this tier
-      const only = state.tiers.size===1 && state.tiers.has(t);
-      state.tiers = only ? new Set(["A","B","C","D","E"]) : new Set([t]);
-      syncLegend(); render();
-    };
+    const seg=document.createElement('div'); seg.className='seg'; seg.style.background=cur.tiers[t].c;
+    seg.style.flex=counts[t]||0.01; seg.textContent=counts[t]>1?counts[t]:(counts[t]||'');
+    seg.title=t+" \u2014 "+cur.tiers[t].label+": "+counts[t];
+    seg.onclick=()=>{ const only=state.tiers.size===1&&state.tiers.has(t); state.tiers=only?new Set(["A","B","C","D","E"]):new Set([t]); syncLegend(); render(); };
     bar.appendChild(seg);
   });
-  labels.innerHTML = ["A","B","C","D","E"].map(t=>`<span>${t} · ${counts[t]} · ${TIERS[t].label}</span>`).join('')
-    + `<span style="color:var(--accent)">${total} total compounds</span>`;
-})();
-
-/* ---------- LEGEND (tier filter) ---------- */
-const legend = document.getElementById('legend');
-["A","B","C","D","E"].forEach(t=>{
-  const b=document.createElement('button');
-  b.className='tierbtn'; b.dataset.tier=t; b.dataset.on="true";
-  b.innerHTML=`<span class="dot" style="background:${TIERS[t].c}"></span>${t}`;
-  b.onclick=()=>{ state.tiers.has(t)?state.tiers.delete(t):state.tiers.add(t); if(state.tiers.size===0){state.tiers=new Set(["A","B","C","D","E"]);} syncLegend(); render(); };
-  legend.appendChild(b);
-});
-function syncLegend(){ legend.querySelectorAll('.tierbtn').forEach(b=>b.dataset.on = state.tiers.has(b.dataset.tier)?"true":"false"); }
-
-/* ---------- CATEGORY CHIPS ---------- */
-const cats = ["All", ...Object.keys(CAT_DESC)];
-const catWrap = document.getElementById('cats');
-cats.forEach(cat=>{
-  const chip=document.createElement('button');
-  chip.className='catchip'; chip.textContent=cat; chip.dataset.on = cat==="All"?"true":"false";
-  chip.onclick=()=>{ state.cat=cat; catWrap.querySelectorAll('.catchip').forEach(c=>c.dataset.on = c.textContent===cat?"true":"false"); render(); };
-  catWrap.appendChild(chip);
-});
-
-/* ---------- SEARCH ---------- */
-document.getElementById('search').addEventListener('input', e=>{ state.q=e.target.value.toLowerCase().trim(); render(); });
-
-/* ---------- RENDER ---------- */
-const root=document.getElementById('cards');
-const empty=document.getElementById('empty');
+  labels.innerHTML=["A","B","C","D","E"].map(t=>"<span>"+t+" \u00b7 "+counts[t]+" \u00b7 "+cur.tiers[t].label+"</span>").join('')
+    +"<span style=\"color:var(--accent)\">"+cur.data.length+" "+cur.distUnit+"</span>";
+}
+function buildLegend(){
+  const legend=$('legend'); legend.innerHTML='';
+  ["A","B","C","D","E"].forEach(t=>{
+    const b=document.createElement('button'); b.className='tierbtn'; b.dataset.tier=t; b.dataset.on="true";
+    b.innerHTML='<span class="dot" style="background:'+cur.tiers[t].c+'"></span>'+t;
+    b.onclick=()=>{ state.tiers.has(t)?state.tiers.delete(t):state.tiers.add(t); if(!state.tiers.size)state.tiers=new Set(["A","B","C","D","E"]); syncLegend(); render(); };
+    legend.appendChild(b);
+  });
+}
+function syncLegend(){ $('legend').querySelectorAll('.tierbtn').forEach(b=>b.dataset.on=state.tiers.has(b.dataset.tier)?"true":"false"); }
+function buildCats(){
+  const catWrap=$('cats'); catWrap.innerHTML='';
+  ["All",...Object.keys(cur.catDesc)].forEach(cat=>{
+    const chip=document.createElement('button'); chip.className='catchip'; chip.textContent=cat; chip.dataset.on=cat==="All"?"true":"false";
+    chip.onclick=()=>{ state.cat=cat; catWrap.querySelectorAll('.catchip').forEach(c=>c.dataset.on=c.textContent===cat?"true":"false"); render(); };
+    catWrap.appendChild(chip);
+  });
+}
 function matches(c){
   if(!state.tiers.has(c.tier)) return false;
-  if(state.cat!=="All" && c.cat!==state.cat) return false;
+  if(state.cat!=="All"&&c.cat!==state.cat) return false;
   if(state.q){
-    const hay=(c.nm+" "+c.alias+" "+c.one+" "+c.what+" "+c.cat).toLowerCase();
+    const hay=[c.nm,c.alias,c.one,c.what,c.cat,c.prop||'',c.evidence||'',c.use||''].join(' ').toLowerCase();
     if(!hay.includes(state.q)) return false;
   }
   return true;
 }
 function cardHTML(c,i){
-  const t=TIERS[c.tier];
-  const fdaPill = c.fda==="approved"
-    ? `<span class="pill fda-y">FDA approved</span>`
-    : `<span class="pill fda-n">Not FDA approved</span>`;
-  const wadaPill = c.wada ? `<span class="pill wada">WADA banned</span>` : `<span class="pill">WADA: not listed</span>`;
-  return `<div class="card" style="border-left-color:${t.c}" data-i="${i}">
-    <div class="head" role="button" tabindex="0" aria-expanded="false">
-      <div class="tier" style="background:${t.c}" title="${t.label}">${c.tier}</div>
-      <div class="meta">
-        <div class="nm">${c.nm}${c.flag?'<span class="flag" title="Notable safety signal">▲</span>':''}${c.nonpep?'<span class="nonpep">not a peptide</span>':''}</div>
-        <div class="alias">${c.alias}</div>
-        <div class="one">${c.one}</div>
-      </div>
-    </div>
-    <div class="detail">
-      <div class="field"><div class="k">What it does</div><div class="v">${c.what}</div></div>
-      <div class="field"><div class="k">Route & frequency (reported convention)</div><div class="v">${c.route}</div></div>
-      <div class="field"><div class="k">Duration & cycling</div><div class="v">${c.dur}</div></div>
-      <div class="field warn"><div class="k">Cautions / don't-do</div><div class="v">${c.caution}</div></div>
-      <div class="field"><div class="k">Evidence & disputes</div><div class="v">${c.evidence}</div></div>
-      <div class="status">${fdaPill}${wadaPill}<span class="pill" style="border-color:${t.c};color:${t.c}">Tier ${c.tier} · ${t.label}</span></div>
-    </div>
-  </div>`;
+  const t=cur.tiers[c.tier];
+  let fields, status;
+  if(cur.kind==='pep'){
+    fields='<div class="field"><div class="k">What it does</div><div class="v">'+c.what+'</div></div>'
+      +'<div class="field"><div class="k">Route &amp; frequency (reported convention)</div><div class="v">'+c.route+'</div></div>'
+      +'<div class="field"><div class="k">Duration &amp; cycling</div><div class="v">'+c.dur+'</div></div>'
+      +'<div class="field warn"><div class="k">Cautions / don\u2019t-do</div><div class="v">'+c.caution+'</div></div>'
+      +'<div class="field"><div class="k">Evidence &amp; disputes</div><div class="v">'+c.evidence+'</div></div>';
+    const fda=c.fda==="approved"?'<span class="pill fda-y">FDA approved</span>':'<span class="pill fda-n">Not FDA approved</span>';
+    const wada=c.wada?'<span class="pill wada">WADA banned</span>':'<span class="pill">WADA: not listed</span>';
+    status=fda+wada;
+  } else {
+    fields='<div class="field"><div class="k">What it is / how it works</div><div class="v">'+c.what+'</div></div>'
+      +'<div class="field"><div class="k">Medical &amp; real-world use</div><div class="v">'+c.use+'</div></div>'
+      +'<div class="field"><div class="k">Defining property</div><div class="v">'+c.prop+'</div></div>'
+      +'<div class="field warn"><div class="k">Risks (reversible vs permanent)</div><div class="v">'+c.risk+'</div></div>';
+    const med=c.med?'<span class="pill med-y">Medical use</span>':'<span class="pill med-n">No accepted medical use</span>';
+    const wada=c.wada?'<span class="pill wada">WADA banned</span>':'<span class="pill">WADA: not listed</span>';
+    status=med+'<span class="pill">'+c.legal+'</span>'+wada;
+  }
+  const tag=cur.kind==='pep'?(c.nonpep?'<span class="nonpep">not a peptide</span>':''):(c.vet?'<span class="vet">veterinary origin</span>':'');
+  return '<div class="card" style="border-left-color:'+t.c+'" data-i="'+i+'">'
+    +'<div class="head" role="button" tabindex="0" aria-expanded="false">'
+    +'<div class="tier" style="background:'+t.c+'" title="'+t.label+'">'+c.tier+'</div>'
+    +'<div class="meta"><div class="nm">'+c.nm+(c.flag?'<span class="flag" title="Notable safety/harm signal">\u25b2</span>':'')+tag+'</div>'
+    +'<div class="alias">'+c.alias+'</div><div class="one">'+c.one+'</div></div></div>'
+    +'<div class="detail">'+fields
+    +'<div class="status">'+status+'<span class="pill" style="border-color:'+t.c+';color:'+t.c+'">Tier '+c.tier+' \u00b7 '+t.label+'</span></div>'
+    +'</div></div>';
 }
 function render(){
-  const shown = C.map((c,i)=>({c,i})).filter(o=>matches(o.c));
-  empty.style.display = shown.length?'none':'block';
+  const root=$('cards'), empty=$('empty');
+  const shown=cur.data.map((c,i)=>({c,i})).filter(o=>matches(o.c));
+  empty.style.display=shown.length?'none':'block';
   if(state.cat==="All"){
-    // group by category
-    const groups={};
-    shown.forEach(o=>{ (groups[o.c.cat]=groups[o.c.cat]||[]).push(o); });
-    root.innerHTML = Object.keys(CAT_DESC).filter(cat=>groups[cat]).map(cat=>{
+    const groups={}; shown.forEach(o=>{(groups[o.c.cat]=groups[o.c.cat]||[]).push(o);});
+    root.innerHTML=Object.keys(cur.catDesc).filter(cat=>groups[cat]).map(cat=>{
       const items=groups[cat];
-      return `<section class="cat">
-        <h2>${cat}<span class="ct">${items.length} shown</span></h2>
-        <p class="catdesc">${CAT_DESC[cat]}</p>
-        <div class="grid">${items.map(o=>cardHTML(o.c,o.i)).join('')}</div>
-      </section>`;
+      return '<section class="cat"><h2>'+cat+'<span class="ct">'+items.length+' shown</span></h2>'
+        +'<p class="catdesc">'+cur.catDesc[cat]+'</p><div class="grid">'+items.map(o=>cardHTML(o.c,o.i)).join('')+'</div></section>';
     }).join('');
   } else {
-    root.innerHTML = `<section class="cat">
-      <h2>${state.cat}<span class="ct">${shown.length} shown</span></h2>
-      <p class="catdesc">${CAT_DESC[state.cat]}</p>
-      <div class="grid">${shown.map(o=>cardHTML(o.c,o.i)).join('')}</div>
-    </section>`;
+    root.innerHTML='<section class="cat"><h2>'+state.cat+'<span class="ct">'+shown.length+' shown</span></h2>'
+      +'<p class="catdesc">'+cur.catDesc[state.cat]+'</p><div class="grid">'+shown.map(o=>cardHTML(o.c,o.i)).join('')+'</div></section>';
   }
   bindCards();
 }
 function bindCards(){
-  root.querySelectorAll('.card .head').forEach(h=>{
-    const toggle=()=>{ const card=h.closest('.card'); const open=card.classList.toggle('open'); h.setAttribute('aria-expanded',open); };
-    h.onclick=toggle;
-    h.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } };
+  $('cards').querySelectorAll('.card .head').forEach(h=>{
+    const toggle=()=>{const card=h.closest('.card');const open=card.classList.toggle('open');h.setAttribute('aria-expanded',open);};
+    h.onclick=toggle; h.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}};
   });
 }
-document.getElementById('expandAll').onclick=()=>root.querySelectorAll('.card').forEach(c=>{c.classList.add('open');c.querySelector('.head').setAttribute('aria-expanded','true');});
-document.getElementById('collapseAll').onclick=()=>root.querySelectorAll('.card').forEach(c=>{c.classList.remove('open');c.querySelector('.head').set
+$('search').addEventListener('input',e=>{state.q=e.target.value.toLowerCase().trim();render();});
+$('expandAll').onclick=()=>$('cards').querySelectorAll('.card').forEach(c=>{c.classList.add('open');c.querySelector('.head').setAttribute('aria-expanded','true');});
+$('collapseAll').onclick=()=>$('cards').querySelectorAll('.card').forEach(c=>{c.classList.remove('open');c.querySelector('.head').setAttribute('aria-expanded','false');});
+document.querySelectorAll('.tabbtn').forEach(b=>b.on
